@@ -5,7 +5,7 @@ import { Disciplina } from "../models/Disciplina.js";
 import { Questao } from "../models/Questao.js";
 import { Usuario } from "../models/Usuario.js";
 import { UsuarioResposta } from "../models/UsuarioResposta.js"
-
+import { UsuarioRespostaService } from "../services/UsuarioRespostaService.js";
 const sequelize = new Sequelize(databaseConfigSQLite)
 
 
@@ -30,6 +30,69 @@ function databaseInserts() {
         const disciplina3 = await Disciplina.create({ nome: "História" });
         const disciplina4 = await Disciplina.create({ nome: "Geografia" });
         const disciplina5 = await Disciplina.create({ nome: "Ciências" });
+        //QUESTOES DA PROVA 1-2020
+        const questao1 = await Questao.create({enunciado: `
+        Texto para as questões 1 a 10
+
+        Dívida com a Terra
+        
+        “Earth Overshoot Day”, o Dia da Sobrecarga da Terra (algo como “dia em que se 
+        ultrapassam os limites da Terra”). A data é determinada a partir da comparação 
+        entre nossas demandas pelo que vem da natureza – para atividades como construção, 
+        manufatura e absorção do lixo e do gás carbônico que liberamos na atmosfera – e o que 
+        a natureza pode realmente repor através das florestas, mananciais, reservas pesqueiras 
+        e terras cultiváveis. O cálculo é feito por um centro de estudos americanos, o Global 
+        Footprint Network.
+        A superexploração de recursos naturais começou em 1970, quando a capacidade total 
+        do planeta para aquele ano se esgotou no fim de dezembro. De lá para cá, o Dia da 
+        Sobrecarga da Terra tem sido assinalado cada vez mais cedo: em 1997 ocorreu no final de 
+        setembro enquanto que, em 2018, se assinalou a 1 de agosto – e previsto para 29 de julho 
+        em 2019. Por outras palavras, atualmente, é exercida uma procura 1,75 vezes superior à 
+        capacidade de regeneração dos ecossistemas, ou seja, anualmente a humanidade usa os 
+        recursos equivalentes de 1,75 planetas Terra. Cada país contribui de maneira diferente 
+        para esses dados, dependendo de seu modo de vida.
+        Em todo o mundo, os danos causados pela sobrecarga são cada vez mais evidentes: 
+        desflorestação, escassez de água doce, erosão do solo, perda de biodiversidade ou 
+        acumulação de dióxido de carbono na atmosfera. Por sua vez, esses danos acentuam e 
+        dão origem a fenômenos, tais como as alterações climáticas, secas severas, incêndios 
+        florestais ou furacões, isso porque os mecanismos naturais do planeta para lidar com toda 
+        essa pressão estão sobrecarregados.
+        “As economias atuais estão gerindo um esquema de pirâmide financeira com o nosso 
+        planeta”, afirma Mathis Wackernagel, CEO e cofundador da Global Footprint Network. 
+        “Estamos usando os recursos futuros da Terra para operar nossas economias no presente. 
+        Como qualquer esquema de pirâmide, isso funciona por algum tempo. Mas, à medida que 
+        as nações, empresas ou famílias se aprofundam cada vez mais em dívidas, acabarão por 
+        entrar em colapso.”
+        No entanto, é possível inverter essa tendência. Se o Dia da Sobrecarga da Terra fosse 
+        adiantado 5 dias todos os anos até 2050, seria possível retornar ao nível em que usávamos 
+        os recursos de um só planeta. Para assinalar o Dia da Sobrecarga da Terra, a Global 
+        Footprint Network sugere alguns passos e estima o seu impacto na alteração no Dia da 
+        Sobrecarga da Terra. Por exemplo: se 50% do consumo de carne fosse substituído por uma 
+        dieta vegetariana, a data poderia mover-se 5 dias; uma redução de 50% da componente do
+        carbono na Pegada Ecológica moveria a data 93 dias.
+        [...]
+        “Na Global Footprint Network acreditamos que o uso excessivo dos ecossistemas 
+        da Terra constitui um dos maiores desafios que a humanidade enfrenta na atualidade, 
+        sendo que as alterações climáticas são uma parte importante desse desafio”, concluiu 
+        Wackernagel. “Transformar as nossas economias para responder a esse desafio não 
+        é uma tarefa fácil. No entanto, da mesma forma que no passado a humanidade usou 
+        criatividade e engenho, poderemos fazê-lo novamente para criar um futuro próspero, 
+        livre de combustíveis fósseis e destruição do planeta.”
+        
+        01. Atente a estas considerações acerca do texto.
+        A. Os recursos naturais da Terra sempre foram extraídos, no entanto o excesso começou a ocorrer a partir de 1970.
+        B. Uma das soluções para se equilibrar o Dia de Sobrecarga da Terra é padronizar o estilo de 
+        vida dos países.
+        C. O desmatamento acelerado de florestas e as atividades pesqueiras são os grandes responsáveis 
+        pelo desequilíbrio do planeta.
+        D. As consequências da superexploração de recursos naturais da Terra atingem principalmente 
+        os países com alto padrão de vida de sua população.
+        E. O estilo de vida atual bem como a economia são os fatores que determinam a progressividade 
+        do Dia de Sobrecarga da Terra.
+        Está CORRETO o que se afirma em
+        `, opcao1: `A, D e E apenas.`, opcao2: `B, C e E apenas.`, opcao3: `C e D apenas.`, opcao4: `A e E apenas.`, opcao5: `A, B e C apenas.`, respostaCorreta: 'D', disciplinaId:1})
+        const usuario1 = await Usuario.create({nome:"Lucas Macedo Bernardino", email:"lucasmacedoes@gmail.com", senha:"123"})
+
         /*
         const questao1 = await City.create({ name: "Cachoeiro", ufId: 1 });
         const questao2 = await City.create({ name: "Alegre", ufId: 1 });

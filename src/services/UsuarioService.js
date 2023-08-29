@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 class UsuarioService {
 
     static async findAll() {
-        const objs = await Disciplina.findAll({ include: { all: true, nested: true } });
+        const objs = await Usuario.findAll({ include: { all: true, nested: true } });
         return objs;
     }
 
@@ -37,14 +37,6 @@ class UsuarioService {
         } catch (error) {
             throw "Não é possível remover, há dependências!";
         }
-    }
-    static async updateScore(usuario) {
-        const pontuacaoAtualizada = usuario.pontuacao += 10
-        const obj = await Usuario.findByPk(usuario.id, { include: { all: true, nested: true } });
-        if (obj == null) throw 'Usuário a ser atualizado não encontrado!';
-        Object.assign(obj, {pontuacaoAtualizada})
-        await obj.save();
-        return await Usuario.findByPk(obj.id, { include: { all: true, nested: true }});
     }
 }
 

@@ -1,5 +1,6 @@
+import { Questao } from "../models/Questao.js";
 import { UsuarioResposta as UR } from "../models/UsuarioResposta.js";
-import { UsuarioService } from "../services/UsuarioService.js";
+import { Usuario } from "../models/Usuario.js";
 class UsuarioRespostaService {
 
     static async findAll() {
@@ -17,13 +18,15 @@ class UsuarioRespostaService {
         const { respostaUsuario, usuario, questao} = req.body;
         if (usuario == null ) throw 'Usuario deve ser preenchido!';
         if (questao == null) throw 'Questão deve ser preenchida';
-        if (respostaUsuario == questao.respostaCorreta){
-            const usuarioAtualizado = await UsuarioService.updateScore(usuario)
-            const obj = await UR.create({ respostaUsuario, usuarioId: usuarioAtualizado.id, questaoId: questao.id });
+        const questao1 = await Questao.findByPk(questao[0].id)
+        if (respostaUsuario == questao1.respostaCorreta){
+            const usuario1 = await Usuario.findByPk(usuario[0].id)
+            const usuarioAtualizado = await usuario1.increment('pontuacao', {by: 10});
+            const obj = await UR.create({ respostaUsuario, usuarioId: usuarioAtualizado.id, questaoId: questao[0].id });
             return await UR.findByPk(obj.id, { include: { all: true, nested: true } });
         }else{
-            const obj = await UR.create({ respostaUsuario, usuarioId: usuario.id, questaoId: questao.id });
-            return await UR.findByPk(obj.id, { include: { all: true, nested: true } });
+            const obj = await UR.create({ respostaUsuario: respostaUsuario, usuarioId: usuario.id, questaoId: questao.id });
+            return await UR.findByPk(obj.id, { include: { all: true, nested: true }});
         }
     }
 
