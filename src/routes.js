@@ -24,6 +24,7 @@ routes.get('/usuarios/:id', UsuarioController.findByPk);
 routes.post('/usuarios', UsuarioController.create);
 routes.put('/usuarios/:id', UsuarioController.update);
 routes.delete('/usuarios/:id', UsuarioController.delete);
+routes.post('/usuarios/login', UsuarioController.login);
 
 routes.get('/usuarioresposta', UsuarioRespostaController.findAll);
 routes.get('/usuarioresposta/:id', UsuarioRespostaController.findByPk);

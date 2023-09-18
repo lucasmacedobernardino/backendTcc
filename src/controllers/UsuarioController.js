@@ -30,6 +30,12 @@ class UsuarioController {
             .then(obj => res.json(obj))
             .catch(next);
     }
+  
+    static async login(req, res, next) {
+        UsuarioService.login(req)
+            .then(obj => res.json(obj))
+            .catch(next);
+    }
 
 }
 

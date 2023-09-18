@@ -1,5 +1,6 @@
+import sequelize from "sequelize";
 import { Usuario } from "../models/Usuario.js";
-import bcrypt from "bcrypt";
+import {sequelize as sq} from "../config/database-connections.js"
 class UsuarioService {
 
     static async findAll() {
@@ -15,7 +16,7 @@ class UsuarioService {
 
     static async create(req) {
         const { nome, email, senha} = req.body;
-        const obj = await Usuario.create({ nome, email, senha, pontuacao });
+        const obj = await Usuario.create({ nome, email, senha });
         return await Usuario.findByPk(obj.id, { include: { all: true, nested: true } });
     }
 
@@ -37,6 +38,18 @@ class UsuarioService {
         } catch (error) {
             throw "Não é possível remover, há dependências!";
         }
+    }
+    static async login(req){
+      const { email, senha} = req.body;
+     const user = await Usuario.findOne({ where: { email: email } });
+      if (!user){
+        return {message: "Usuário não encontrado!"}
+      }
+      if (senha == user.dataValues.senha){
+        return {user, message:"Login efetuado!"}
+      }else{
+        return {message: "Senha incorreta!"}
+      }  
     }
 }
 

@@ -6,7 +6,7 @@ import { Questao } from "../models/Questao.js";
 import { Usuario } from "../models/Usuario.js";
 import { UsuarioResposta } from "../models/UsuarioResposta.js"
 import { UsuarioRespostaService } from "../services/UsuarioRespostaService.js";
-const sequelize = new Sequelize(databaseConfigSQLite)
+export const sequelize = new Sequelize(databaseConfigSQLite)
 
 
 Disciplina.init(sequelize)
@@ -91,7 +91,16 @@ function databaseInserts() {
         do Dia de Sobrecarga da Terra.
         Está CORRETO o que se afirma em
         `, opcao1: `A, D e E apenas.`, opcao2: `B, C e E apenas.`, opcao3: `C e D apenas.`, opcao4: `A e E apenas.`, opcao5: `A, B e C apenas.`, respostaCorreta: 'D', disciplinaId:1})
+      
         const usuario1 = await Usuario.create({nome:"Lucas Macedo Bernardino", email:"lucasmacedoes@gmail.com", senha:"123"})
+      
+        const usuario2 = await Usuario.create({nome:"Raphael Macedo Bernardino", email:"faeldojo@gmail.com", senha:"asdasdasdasd"})
+      
+        const usuario3 = await Usuario.create({nome:"João Macedo Bernardino", email:"joão@gmail.com", senha:"123"})
+      
+        const usuario4 = await Usuario.create({nome:"Eita Macedo Bernardino", email:"eita@gmail.com", senha:"XASDASsdBX"})
+      
+        const usuario5 = await Usuario.create({nome:"Samuel Macedo Bernardino", email:"samuel@gmail.com", senha:"zxvbad12"})
 
         /*
         const questao1 = await City.create({ name: "Cachoeiro", ufId: 1 });
