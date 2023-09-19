@@ -37,6 +37,9 @@ class UsuarioController {
             .catch(next);
     }
 
+    static async ranking(req, res, next){
+        
+    }
 }
 
 export { UsuarioController };

@@ -15,20 +15,19 @@ class UsuarioRespostaService {
     }
 
     static async create(req) {
-        const { respostaUsuario, usuario, questao} = req.body;
+        const { respostaUsuario, usuario, questao, data} = req.body;
         if (usuario == null ) throw 'Usuario deve ser preenchido!';
         if (questao == null) throw 'Questão deve ser preenchida';
         const questao1 = await Questao.findByPk(questao[0].id)
         if (respostaUsuario == questao1.respostaCorreta){
             const usuario1 = await Usuario.findByPk(usuario[0].id)
             const usuarioAtualizado = await usuario1.increment('pontuacao', {by: 10});
-            const obj = await UR.create({ respostaUsuario, usuarioId: usuarioAtualizado.id, questaoId: questao[0].id });
-            return await UR.findByPk(obj.id, { include: { all: true, nested: true } });
-        }else{
-            const obj = await UR.create({ respostaUsuario: respostaUsuario, usuarioId: usuario.id, questaoId: questao.id });
-            return await UR.findByPk(obj.id, { include: { all: true, nested: true }});
+            const obj = await UR.create({ respostaUsuario, usuarioId: usuarioAtualizado.id, questaoId: questao[0].id, dataResposta: data});
+            return {respostaCorreta: obj, "message": "Resposta Correta!"};
+        }else{ 
+            return {"message": "Resposta Incorreta!"}
         }
-    }
+    } 
 
     static async update(req) {
         const { id } = req.params;

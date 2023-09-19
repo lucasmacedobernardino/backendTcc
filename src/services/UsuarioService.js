@@ -51,6 +51,7 @@ class UsuarioService {
         return {message: "Senha incorreta!"}
       }  
     }
+    
 }
 
 export { UsuarioService };
