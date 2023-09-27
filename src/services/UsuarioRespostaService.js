@@ -89,7 +89,7 @@ const adicionarVidasProgramada = async () => {
     }
   };
 
-  cron.schedule("*/5  * * * *", adicionarVidasProgramada);
+  cron.schedule("*/20  * * * *", adicionarVidasProgramada);
 export { UsuarioRespostaService };
 
 
