@@ -12,6 +12,11 @@ class UsuarioRespostaController {
             .then(obj => res.json(obj))
             .catch(next);
     }
+    static async ranking(req, res, next) {
+        UsuarioRespostaService.ranking(req)
+            .then(obj => res.json(obj))
+            .catch(next);
+    }
 
     static async create(req, res, next) {
         UsuarioRespostaService.create(req)

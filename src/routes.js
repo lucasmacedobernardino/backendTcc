@@ -26,10 +26,13 @@ routes.put('/usuarios/:id', UsuarioController.update);
 routes.delete('/usuarios/:id', UsuarioController.delete);
 routes.post('/usuarios/login', UsuarioController.login);
 
+
 routes.get('/usuarioresposta', UsuarioRespostaController.findAll);
 routes.get('/usuarioresposta/:id', UsuarioRespostaController.findByPk);
+routes.get('/usuarioresposta/ranking/:periodo', UsuarioRespostaController.ranking);
 routes.post('/usuarioresposta', UsuarioRespostaController.create);
 routes.put('/usuarioresposta/:id', UsuarioRespostaController.update);
 routes.delete('/usuarioresposta/:id', UsuarioRespostaController.delete);
+
 
 export default routes;
