@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+
 class Usuario extends Model {
     static init(sequelize) {
         super.init({
@@ -35,9 +36,35 @@ class Usuario extends Model {
                     notNull: { msg: "A pontuação não pode ser nula!" },
                     notEmpty: { msg: "A pontuação não pode ser vazia!" }
                 }
+            },
+            vidas: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 5,
+                validate: {
+                    notNull: { msg: "A vida não pode ser nula!" },
+                    notEmpty: { msg: "A vida não pode ser vazia!" }
+                }
             }
         }, { sequelize, modelName: "usuario", tableName: "usuarios" });
     }
+
+    // Método para adicionar uma vida
+    async adicionarVida() {
+        if (this.vidas < 5) {
+            this.vidas += 1;
+            await this.save();
+        }
+    }
+
+    // Método para remover uma vida
+    async removerVida() {
+        if (this.vidas > 0) {
+            this.vidas -= 1;
+            await this.save();
+        }
+    }
+
     static associate(models) {
     }
 }

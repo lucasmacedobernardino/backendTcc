@@ -57,6 +57,10 @@ class Questao extends Model {
                     notNull: {msg: "A resposta não pode ser nula!"},
                     notEmpty: {msg: "A resposta não pode estar vazia!"}
                 }
+            },
+            imagem: {
+                type: DataTypes.BLOB,
+                allowNull: true,
             }
         }, { sequelize, modelName: "questao", tableName: "questoes" });
     }

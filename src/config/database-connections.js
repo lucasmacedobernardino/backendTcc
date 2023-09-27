@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import { databaseConfigSQLite} from "./database-config.js";
-
+import fs from "fs"
 import { Disciplina } from "../models/Disciplina.js";
 import { Questao } from "../models/Questao.js";
 import { Usuario } from "../models/Usuario.js";
@@ -31,6 +31,7 @@ function databaseInserts() {
         const disciplina4 = await Disciplina.create({ nome: "Geografia" });
         const disciplina5 = await Disciplina.create({ nome: "Ciências" });
         //QUESTOES DA PROVA 1-2020
+        const imagemBufferQuestao1 = fs.readFileSync('C:/Users/Usuário/Desktop/backendTcc/src/assets/monalisa.png');
         const questao1 = await Questao.create({enunciado: `
         Texto para as questões 1 a 10
 
@@ -90,7 +91,15 @@ function databaseInserts() {
         E. O estilo de vida atual bem como a economia são os fatores que determinam a progressividade 
         do Dia de Sobrecarga da Terra.
         Está CORRETO o que se afirma em
-        `, opcao1: `A, D e E apenas.`, opcao2: `B, C e E apenas.`, opcao3: `C e D apenas.`, opcao4: `A e E apenas.`, opcao5: `A, B e C apenas.`, respostaCorreta: 'D', disciplinaId:1})
+        `, 
+        opcao1: `A, D e E apenas.`, 
+        opcao2: `B, C e E apenas.`, 
+        opcao3: `C e D apenas.`, 
+        opcao4: `A e E apenas.`, 
+        opcao5: `A, B e C apenas.`, 
+        respostaCorreta: 'D', 
+        disciplinaId:1,
+        imagem: imagemBufferQuestao1});
       
         const usuario1 = await Usuario.create({nome:"Lucas Macedo Bernardino", email:"lucasmacedoes@gmail.com", senha:"123"})
       
