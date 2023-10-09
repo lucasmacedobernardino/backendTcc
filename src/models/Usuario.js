@@ -28,13 +28,31 @@ class Usuario extends Model {
                     notEmpty: { msg: "A senha não pode ser vazia!" }
                 }
             },
-            pontuacao: {
+            pontuacao_dia: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
                 validate: {
-                    notNull: { msg: "A pontuação não pode ser nula!" },
-                    notEmpty: { msg: "A pontuação não pode ser vazia!" }
+                    notNull: { msg: "A pontuação do dia não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação do dia não pode ser vazia!" }
+                }
+            },
+            pontuacao_mes: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+                validate: {
+                    notNull: { msg: "A pontuação do mês não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação do mês não pode ser vazia!" }
+                }
+            },
+            pontuacao_ano: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+                validate: {
+                    notNull: { msg: "A pontuação do ano não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação do ano não pode ser vazia!" }
                 }
             },
             vidas: {

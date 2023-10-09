@@ -15,5 +15,4 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(routes);
 app.use(errorHandler);
-
 app.listen(3333);
