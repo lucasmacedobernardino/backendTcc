@@ -1,6 +1,5 @@
-import sequelize from "sequelize";
 import { Usuario } from "../models/Usuario.js";
-import {sequelize as sq} from "../config/database-connections.js"
+import bcrypt from 'bcrypt';
 class UsuarioService {
 
     static async findAll() {
@@ -16,7 +15,8 @@ class UsuarioService {
 
     static async create(req) {
         const { nome, email, senha} = req.body;
-        const obj = await Usuario.create({ nome, email, senha });
+        const hashedSenha = await bcrypt.hash(senha, 10);
+        const obj = await Usuario.create({ nome, email, senha: hashedSenha });
         return await Usuario.findByPk(obj.id, { include: { all: true, nested: true } });
     }
 
@@ -45,7 +45,8 @@ class UsuarioService {
       if (!user){
         return {message: "Usuário não encontrado!"}
       }
-      if (senha == user.dataValues.senha){
+      const senhaCorrespondente = await bcrypt.compare(senha, user.dataValues.senha);
+      if (senhaCorrespondente){
         return {user, message:"Login efetuado!"}
       }else{
         return {message: "Senha incorreta!"}

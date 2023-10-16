@@ -13,6 +13,16 @@ class QuestaoService {
         return obj;
     }
 
+    static async findByDisciplina(req){
+        const {id} = req.params;
+        const obj = await Questao.findAll({
+            where: {
+                disciplinaId: id
+            },
+            include: { all: true, nested: true }
+        });
+        return obj;
+    }
     static async create(req) {
         const { enunciado, disciplina, opcao1, opcao2, opcao3, opcao4, opcao5, respostaCorreta} = req.body;
         if (disciplina == null) throw 'A disciplina da questão deve ser preenchida!';

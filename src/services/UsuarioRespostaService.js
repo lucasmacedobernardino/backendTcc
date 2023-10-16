@@ -51,9 +51,6 @@ class UsuarioRespostaService {
         await obj.save();
         return await UR.findByPk(obj.id, { include: { all: true, nested: true } });
     }
-
-
-
     static async delete(req) {
         const { id } = req.params;
         const obj = await UR.findByPk(id);

@@ -15,9 +15,11 @@ routes.delete('/disciplinas/:id', DisciplinaController.delete);
 
 routes.get('/questoes', QuestaoController.findAll);
 routes.get('/questoes/:id', QuestaoController.findByPk);
+routes.get('/questoes/disciplinas/:id', QuestaoController.findByDisciplina)
 routes.post('/questoes', QuestaoController.create);
 routes.put('/questoes/:id', QuestaoController.update);
 routes.delete('/questoes/:id', QuestaoController.delete);
+
 
 routes.get('/usuarios', UsuarioController.findAll);
 routes.get('/usuarios/:id', UsuarioController.findByPk);
