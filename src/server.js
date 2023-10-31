@@ -1,9 +1,10 @@
+import dotenv from 'dotenv';
 import express from "express";
 import sequelize from "./config/database-connections.js"; 
 import routes from "./routes.js";
 import errorHandler from '../src/_middleware/error-handler.js';
 const app = express();
-
+dotenv.config();
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

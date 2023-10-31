@@ -1,5 +1,6 @@
-import { Usuario } from "../models/Usuario.js";
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { Usuario } from "../models/Usuario.js";
 class UsuarioService {
 
     static async findAll() {
@@ -42,12 +43,28 @@ class UsuarioService {
     static async login(req){
       const { email, senha} = req.body;
      const user = await Usuario.findOne({ where: { email: email } });
+     console.log(user)
       if (!user){
         return {message: "Usuário não encontrado!"}
       }
+
       const senhaCorrespondente = await bcrypt.compare(senha, user.dataValues.senha);
       if (senhaCorrespondente){
-        return {user, message:"Login efetuado!"}
+        const SECRET_KEY = process.env.JWT_SECRET_KEY
+
+        const payload = {
+          id: user.dataValues.id,
+          email: user.dataValues.email,
+          nome: user.dataValues.nome
+      };
+
+      const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1d' });
+
+        return {
+                token: token, 
+                message: "Login efetuado!",
+                user: { id: user.id, email: user.email, nome: user.dataValues.nome} 
+            }
       }else{
         return {message: "Senha incorreta!"}
       }  
