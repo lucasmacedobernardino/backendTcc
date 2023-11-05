@@ -1,5 +1,6 @@
 import { Questao } from "../models/Questao.js";
-
+import { Usuario } from "../models/Usuario.js";
+import sequelize from "../config/database-connections.js";
 class QuestaoService {
 
     static async findAll() {
@@ -13,16 +14,54 @@ class QuestaoService {
         return obj;
     }
 
-    static async findByDisciplina(req){
-        const {id} = req.params;
-        const obj = await Questao.findAll({
-            where: {
-                disciplinaId: id
-            },
-            include: { all: true, nested: true }
-        });
-        return obj;
+    static async findByDisciplina(req) {
+        console.log(req.userId);
+        const disciplinaId = req.params.id;
+        const userId = req.userId; // Supondo que o ID do usuário esteja disponível aqui após autenticação.
+    
+        // Verificar se o ID da disciplina foi fornecido
+        if (!disciplinaId) {
+            return { message: "Id não pode ser Nulo ou Vazio!" };
+        }
+    
+        // Busca o usuário pelo ID para verificar a quantidade de vidas
+        try {
+            const usuario = await Usuario.findByPk(userId);
+            if (!usuario) {
+                return { message: "Usuário não encontrado." };
+            }
+    
+            // Verifica as vidas do usuário
+            if (usuario.vidas <= 0) {
+                return { message: "Você não tem vidas disponíveis." };
+            }
+        } catch (error) {
+            console.error("Erro ao buscar usuário:", error);
+            return { message: "Erro ao buscar usuário. Por favor, tente novamente mais tarde." };
+        }
+    
+        // Busca a questão para a disciplina especificada
+        try {
+            const questao = await Questao.findOne({
+                where: { disciplinaId: disciplinaId },
+                order: sequelize.literal('random()'),
+                include: [
+                    // Seus modelos relacionados aqui
+                ]
+            });
+    
+            if (!questao) {
+                return { message: "Nenhuma questão encontrada para esta disciplina." };
+            }
+    
+            return { data: questao };
+        } catch (error) {
+            console.error("Erro ao buscar questão por disciplina:", error);
+            return { message: "Erro ao buscar questão. Por favor, tente novamente mais tarde." };
+        }
     }
+    
+    
     static async create(req) {
         const { enunciado, disciplina, opcao1, opcao2, opcao3, opcao4, opcao5, respostaCorreta} = req.body;
         if (disciplina == null) throw 'A disciplina da questão deve ser preenchida!';

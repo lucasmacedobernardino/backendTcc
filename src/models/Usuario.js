@@ -65,6 +65,7 @@ class Usuario extends Model {
                 }
             }
         }, { sequelize, modelName: "usuario", tableName: "usuarios" });
+        
     }
 
     // Método para adicionar uma vida
@@ -84,6 +85,8 @@ class Usuario extends Model {
     }
 
     static associate(models) {
+       
+
     }
 }
 

@@ -4,7 +4,10 @@ import { DisciplinaController } from './controllers/DisciplinaController.js';
 import { QuestaoController } from "./controllers/QuestaoController.js";
 import { UsuarioController } from "./controllers/UsuarioController.js"
 import { UsuarioRespostaController } from "./controllers/UsuarioRespostaController.js"
+import { ConquistaController } from "./controllers/ConquistaController.js";
+import { UsuarioConquistaController } from "./controllers/UsuarioConquistaController.js";
 
+import authMiddleware from "./_middleware/jwt-verify.js";
 const routes = express.Router();
 
 routes.get('/disciplinas', DisciplinaController.findAll);
@@ -15,7 +18,7 @@ routes.delete('/disciplinas/:id', DisciplinaController.delete);
 
 routes.get('/questoes', QuestaoController.findAll);
 routes.get('/questoes/:id', QuestaoController.findByPk);
-routes.get('/questoes/disciplinas/:id', QuestaoController.findByDisciplina)
+routes.get('/questoes/disciplinas/:id', authMiddleware, QuestaoController.findByDisciplina);
 routes.post('/questoes', QuestaoController.create);
 routes.put('/questoes/:id', QuestaoController.update);
 routes.delete('/questoes/:id', QuestaoController.delete);
@@ -30,11 +33,22 @@ routes.post('/usuarios/login', UsuarioController.login);
 
 
 routes.get('/usuarioresposta', UsuarioRespostaController.findAll);
+routes.get('/usuarioresposta/home/:id', UsuarioRespostaController.home);
 routes.get('/usuarioresposta/:id', UsuarioRespostaController.findByPk);
 routes.get('/usuarioresposta/ranking/:periodo', UsuarioRespostaController.ranking);
-routes.post('/usuarioresposta', UsuarioRespostaController.create);
+routes.post('/usuarioresposta',authMiddleware, UsuarioRespostaController.create);
 routes.put('/usuarioresposta/:id', UsuarioRespostaController.update);
 routes.delete('/usuarioresposta/:id', UsuarioRespostaController.delete);
 
+routes.get('/conquista', ConquistaController.findAll);
+routes.get('/conquista/:id', ConquistaController.findByPk);
+routes.post('/conquista', ConquistaController.create);
+routes.delete('/conquista/:id', ConquistaController.delete);
+routes.put('/conquista/:id', ConquistaController.update);
 
+routes.get('/usuarioconquista', UsuarioConquistaController.findAll);
+routes.get('/usuarioconquista/:id', UsuarioConquistaController.findByPk);
+routes.post('/usuarioconquista', UsuarioConquistaController.create);
+routes.delete('/usuarioconquista/:id', UsuarioConquistaController.delete);
+routes.put('/usuarioconquista/:id', UsuarioConquistaController.update);
 export default routes;

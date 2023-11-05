@@ -35,7 +35,11 @@ class UsuarioRespostaController {
             .then(obj => res.json(obj))
             .catch(next);
     }
-
+    static async home(req, res, next){
+        UsuarioRespostaService.home(req)
+            .then(obj => res.json(obj))
+            .catch(next);
+    }   
 }
 
 export { UsuarioRespostaController };

@@ -5,7 +5,8 @@ import { Disciplina } from "../models/Disciplina.js";
 import { Questao } from "../models/Questao.js";
 import { Usuario } from "../models/Usuario.js";
 import { UsuarioResposta } from "../models/UsuarioResposta.js"
-import { UsuarioRespostaService } from "../services/UsuarioRespostaService.js";
+import { Conquista } from "../models/Conquista.js";
+import { UsuarioConquista } from "../models/UsuarioConquista.js";
 import bcrypt from 'bcrypt';
 export const sequelize = new Sequelize(databaseConfigSQLite)
 
@@ -14,13 +15,17 @@ Disciplina.init(sequelize)
 Questao.init(sequelize)
 Usuario.init(sequelize)
 UsuarioResposta.init(sequelize)
+Conquista.init(sequelize)
+UsuarioConquista.init(sequelize)
 
 Disciplina.associate(sequelize.models);
 Questao.associate(sequelize.models);
+UsuarioConquista.associate(sequelize.models)
 Usuario.associate(sequelize.models);
 UsuarioResposta.associate(sequelize.models)
+Conquista.associate(sequelize.models)
 
-databaseInserts();
+databaseInserts();  
 
 function databaseInserts() {
     (async () => {
@@ -1577,20 +1582,49 @@ function databaseInserts() {
             disciplinaId: 3
         });
         //PROVA 60-2022
+        //Conqustas
+        const crown = fs.readFileSync('src/assets/crown.png');
+        const emerald = fs.readFileSync('src/assets/emerald.png');
+        const diamond = fs.readFileSync('src/assets/diamond.png');
+        const conquista1 = await Conquista.create({imagem: crown, nome: "Coroa"})
+        const conquista2 = await Conquista.create({imagem: emerald, nome: "Esmeralda"})
+        const conquista3 = await Conquista.create({imagem: diamond, nome: "Diamante"})
+        //Usuários
         const hashedSenha1 = await bcrypt.hash("Ab123!@#", 10);
         const usuario1 = await Usuario.create({ nome: "Lucas Macedo Bernardino", email: "lucasmacedoes@gmail.com", senha: hashedSenha1})
 
+        const usuarioConquistaCrown1 = await UsuarioConquista.create({usuarioId: usuario1.dataValues.id, conquistaId: conquista1.dataValues.id})
+        const usuarioConquistaEmerald1 = await UsuarioConquista.create({usuarioId: usuario1.dataValues.id, conquistaId: conquista2.dataValues.id})
+        const usuarioConquistaDiamond1 = await UsuarioConquista.create({usuarioId: usuario1.dataValues.id, conquistaId: conquista3.dataValues.id})
+
         const hashedSenha2 = await bcrypt.hash("asdasdasdasd", 10);
         const usuario2 = await Usuario.create({ nome: "Raphael Macedo Bernardino", email: "faeldojo@gmail.com", senha: hashedSenha2})
-
+ 
+        const usuarioConquistaCrown2 = await UsuarioConquista.create({usuarioId: usuario2.dataValues.id, conquistaId: conquista1.dataValues.id})
+        const usuarioConquistaEmerald2 = await UsuarioConquista.create({usuarioId: usuario2.dataValues.id, conquistaId: conquista2.dataValues.id})
+        const usuarioConquistaDiamond2 = await UsuarioConquista.create({usuarioId: usuario2.dataValues.id, conquistaId: conquista3.dataValues.id})
+ 
         const hashedSenha3 = await bcrypt.hash("123", 10);
         const usuario3 = await Usuario.create({ nome: "João Macedo Bernardino", email: "joão@gmail.com", senha: "123" })
 
+        const usuarioConquistaCrown3 = await UsuarioConquista.create({usuarioId: usuario3.dataValues.id, conquistaId: conquista1.dataValues.id})
+        const usuarioConquistaEmerald3 = await UsuarioConquista.create({usuarioId: usuario3.dataValues.id, conquistaId: conquista2.dataValues.id})
+        const usuarioConquistaDiamond3 = await UsuarioConquista.create({usuarioId: usuario3.dataValues.id, conquistaId: conquista3.dataValues.id})
+
         const hashedSenha4 = await bcrypt.hash("XASDASsdBX", 10);
         const usuario4 = await Usuario.create({ nome: "Eita Macedo Bernardino", email: "eita@gmail.com", senha: "XASDASsdBX" })
-
+ 
+        const usuarioConquistaCrown4 = await UsuarioConquista.create({usuarioId: usuario4.dataValues.id, conquistaId: conquista1.dataValues.id})
+        const usuarioConquistaEmerald4 = await UsuarioConquista.create({usuarioId: usuario4.dataValues.id, conquistaId: conquista2.dataValues.id})
+        const usuarioConquistaDiamond4 = await UsuarioConquista.create({usuarioId: usuario4.dataValues.id, conquistaId: conquista3.dataValues.id})
+ 
         const hashedSenha5 = await bcrypt.hash("zxvbad12", 10);
         const usuario5 = await Usuario.create({ nome: "Samuel Macedo Bernardino", email: "samuel@gmail.com", senha: "zxvbad12" })
+        
+        const usuarioConquistaCrown5 = await UsuarioConquista.create({usuarioId: usuario5.dataValues.id, conquistaId: conquista1.dataValues.id})
+        const usuarioConquistaEmerald5 = await UsuarioConquista.create({usuarioId: usuario5.dataValues.id, conquistaId: conquista2.dataValues.id})
+        const usuarioConquistaDiamond5 = await UsuarioConquista.create({usuarioId: usuario5.dataValues.id, conquistaId: conquista3.dataValues.id})
+
         /*
         const questao1 = await City.create({ name: "Cachoeiro", ufId: 1 });
         const questao2 = await City.create({ name: "Alegre", ufId: 1 });

@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import fs from "fs";
 import { Usuario } from "../models/Usuario.js";
+import { Conquista } from '../models/Conquista.js';
+import { UsuarioConquista } from '../models/UsuarioConquista.js';
 class UsuarioService {
 
     static async findAll() {
@@ -13,11 +16,28 @@ class UsuarioService {
         const obj = await Usuario.findByPk(id, { include: { all: true, nested: true } });
         return obj;
     }
-
+    //REGISTER
     static async create(req) {
         const { nome, email, senha} = req.body;
+        const user = await Usuario.findOne({ where: { email: email } });
+        if (user){
+          return {message: "Email já cadastrado"}
+        }
+
         const hashedSenha = await bcrypt.hash(senha, 10);
+ 
         const obj = await Usuario.create({ nome, email, senha: hashedSenha });
+        if (obj) {
+          const crown = fs.readFileSync('src/assets/crown.png');
+          const emerald = fs.readFileSync('src/assets/emerald.png');
+          const diamond = fs.readFileSync('src/assets/diamond.png');
+          const conquista1 = await Conquista.create({imagem: crown, nome: "Coroa"})
+          const conquista2 = await Conquista.create({imagem: emerald, nome: "Esmeralda"})
+          const conquista3 = await Conquista.create({imagem: diamond, nome: "Diamante"})
+          await UsuarioConquista.create({usuarioId: obj.dataValues.id, conquistaId: conquista1.dataValues.id})
+          await UsuarioConquista.create({usuarioId: obj.dataValues.id, conquistaId: conquista2.dataValues.id})
+          await UsuarioConquista.create({usuarioId: obj.dataValues.id, conquistaId: conquista3.dataValues.id})
+        }
         return await Usuario.findByPk(obj.id, { include: { all: true, nested: true } });
     }
 
@@ -40,12 +60,12 @@ class UsuarioService {
             throw "Não é possível remover, há dependências!";
         }
     }
+    //LOGIN
     static async login(req){
-      const { email, senha} = req.body;
+     const { email, senha} = req.body;
      const user = await Usuario.findOne({ where: { email: email } });
-     console.log(user)
       if (!user){
-        return {message: "Usuário não encontrado!"}
+        return {message: "Email não encontrado!"}
       }
 
       const senhaCorrespondente = await bcrypt.compare(senha, user.dataValues.senha);
@@ -54,7 +74,7 @@ class UsuarioService {
 
         const payload = {
           id: user.dataValues.id,
-          email: user.dataValues.email,
+          email: user.dataValues.email, 
           nome: user.dataValues.nome
       };
 
@@ -69,6 +89,7 @@ class UsuarioService {
         return {message: "Senha incorreta!"}
       }  
     }
+
     
 }
 

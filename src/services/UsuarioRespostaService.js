@@ -4,10 +4,13 @@ import { Usuario } from "../models/Usuario.js";
 import { Sequelize } from "sequelize";
 import cron from "node-cron";
 import sequelize from "../config/database-connections.js";
+import { Conquista } from "../models/Conquista.js";
+import { UsuarioConquista } from "../models/UsuarioConquista.js";
 class UsuarioRespostaService {
 
     static async findAll() {
         const objs = await UR.findAll({ include: { all: true, nested: true } });
+        this.atribuirConquistasTop3()
         return objs;
     }
 
@@ -21,6 +24,8 @@ class UsuarioRespostaService {
         const { respostaUsuario, usuario, questao, data } = req.body;
         if (usuario == null) throw 'Usuario deve ser preenchido!';
         if (questao == null) throw 'Questão deve ser preenchida';
+        if (respostaUsuario == null) throw 'Resposta do usuário deve ser preenchida!';
+        if (data == null) throw 'Data deve ser preenchida!';
         const questao1 = await Questao.findByPk(questao[0].id)
         const usuario1 = await Usuario.findByPk(usuario[0].id)
         if (usuario1.dataValues.vidas > 0) {
@@ -63,7 +68,25 @@ class UsuarioRespostaService {
             throw "Não é possível remover, há dependências!";
         }
     }
-    
+    static async top3(req) {
+        const dataAtual = new Date();
+        const mesAtual = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
+        const anoAtual = dataAtual.getFullYear();
+        const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
+        const { periodo } = req.params;
+        console.log(diaAtual)
+        if (periodo === 'dia') {
+            // Consulta para o período do dia atual
+            const obj = sequelize.query(`
+            SELECT DISTINCT u.nome, u.pontuacao_dia
+            FROM usuarios u
+            INNER JOIN usuarioRespostas ur ON u.id = ur.usuario_id 
+            WHERE ur.data_resposta BETWEEN '${anoAtual}-${mesAtual}-${diaAtual} 00:00:00' AND '${anoAtual}-${mesAtual}-${diaAtual} 23:59:59'
+            ORDER BY u.pontuacao_dia DESC
+            LIMIT 3;`)
+            return obj;
+        }
+    }
     static async ranking(req) {
         const dataAtual = new Date();
         const mesAtual = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
@@ -108,6 +131,68 @@ class UsuarioRespostaService {
         }
     }
 
+    static async atribuirConquistasTop3() {
+        const req = { params: { periodo: 'dia' } }; 
+        const top3Usuarios = await this.top3(req);
+    
+        if (!top3Usuarios || top3Usuarios[0].length < 3) {
+            throw 'Não há usuários suficientes para o ranking!';
+        }
+    
+        const conquistaIds = [1, 2, 3];
+    
+        for (let i = 0; i < 3; i++) {
+            const usuario = await Usuario.findOne({ where: { nome: top3Usuarios[0][i].nome } });
+            if (!usuario) throw `Usuário ${top3Usuarios[0][i].nome} não encontrado!`;
+    
+            // Busca pela conquista do usuário
+            let usuarioConquista = await UsuarioConquista.findOne({
+                where: {
+                    usuarioId: usuario.dataValues.id,
+                    conquistaId: conquistaIds[i]
+                }
+            });
+    
+            // Se a conquista já existe para o usuário, incrementa a quantidade
+            if (usuarioConquista) {
+                usuarioConquista.dataValues.quantidade += 1;
+                await usuarioConquista.save();
+            } else {
+                // Se não, cria uma nova com quantidade 1
+                await UsuarioConquista.create({
+                    usuarioId: usuario.id,
+                    conquistaId: conquistaIds[i],
+                    quantidade: 1
+                });
+            }
+        }
+    
+        return 'Conquistas atualizadas com sucesso!';
+    }
+    
+    static async home(req) {
+        const { id } = req.params;
+        if (!id) {
+            return { message: "Id não pode ser Nulo ou Vazio!" };
+        }
+        
+        const user = await Usuario.findOne({ where: { id: id } });
+        if (!user) {
+            return { message: "Você não está cadastrado no nosso sistema!" };
+        }
+        
+        const objDisciplina = await sequelize.query(`SELECT nome AS disciplina_nome FROM disciplinas;`);
+        
+        return {
+            disciplinas: objDisciplina[0],  // [0] porque sequelize.query retorna um array com os resultados na primeira posição e metadados na segunda.
+            usuario: {
+                nome: user.nome,
+                pontuacao_ano: user.pontuacao_ano
+            }
+        };
+    }
+    
+
 
 
 }
@@ -131,6 +216,7 @@ const adicionarVidasProgramada = async () => {
     } catch (error) {
         console.error("Erro ao adicionar vidas programadas:", error);
     }
+    
 };
 
 
