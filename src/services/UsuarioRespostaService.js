@@ -10,7 +10,6 @@ class UsuarioRespostaService {
 
     static async findAll() {
         const objs = await UR.findAll({ include: { all: true, nested: true } });
-        this.atribuirConquistasTop3()
         return objs;
     }
 
@@ -68,25 +67,7 @@ class UsuarioRespostaService {
             throw "Não é possível remover, há dependências!";
         }
     }
-    static async top3(req) {
-        const dataAtual = new Date();
-        const mesAtual = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
-        const anoAtual = dataAtual.getFullYear();
-        const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
-        const { periodo } = req.params;
-        console.log(diaAtual)
-        if (periodo === 'dia') {
-            // Consulta para o período do dia atual
-            const obj = sequelize.query(`
-            SELECT DISTINCT u.nome, u.pontuacao_dia
-            FROM usuarios u
-            INNER JOIN usuarioRespostas ur ON u.id = ur.usuario_id 
-            WHERE ur.data_resposta BETWEEN '${anoAtual}-${mesAtual}-${diaAtual} 00:00:00' AND '${anoAtual}-${mesAtual}-${diaAtual} 23:59:59'
-            ORDER BY u.pontuacao_dia DESC
-            LIMIT 3;`)
-            return obj;
-        }
-    }
+    
     static async ranking(req) {
         const dataAtual = new Date();
         const mesAtual = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
@@ -131,44 +112,8 @@ class UsuarioRespostaService {
         }
     }
 
-    static async atribuirConquistasTop3() {
-        const req = { params: { periodo: 'dia' } }; 
-        const top3Usuarios = await this.top3(req);
     
-        if (!top3Usuarios || top3Usuarios[0].length < 3) {
-            throw 'Não há usuários suficientes para o ranking!';
-        }
     
-        const conquistaIds = [1, 2, 3];
-    
-        for (let i = 0; i < 3; i++) {
-            const usuario = await Usuario.findOne({ where: { nome: top3Usuarios[0][i].nome } });
-            if (!usuario) throw `Usuário ${top3Usuarios[0][i].nome} não encontrado!`;
-    
-            // Busca pela conquista do usuário
-            let usuarioConquista = await UsuarioConquista.findOne({
-                where: {
-                    usuarioId: usuario.dataValues.id,
-                    conquistaId: conquistaIds[i]
-                }
-            });
-    
-            // Se a conquista já existe para o usuário, incrementa a quantidade
-            if (usuarioConquista) {
-                usuarioConquista.dataValues.quantidade += 1;
-                await usuarioConquista.save();
-            } else {
-                // Se não, cria uma nova com quantidade 1
-                await UsuarioConquista.create({
-                    usuarioId: usuario.id,
-                    conquistaId: conquistaIds[i],
-                    quantidade: 1
-                });
-            }
-        }
-    
-        return 'Conquistas atualizadas com sucesso!';
-    }
     
     static async home(req) {
         const { id } = req.params;
@@ -201,6 +146,58 @@ function ultimoDiaDoMes(ano, mes) {
     const data = new Date(ano, mes + 1, 0);
     return data.getDate();
   }
+
+async function top3(req) {
+    const dataAtual = new Date();
+    const mesAtual = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
+    const anoAtual = dataAtual.getFullYear();
+    const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
+    const { periodo } = req.params;
+    console.log(diaAtual)
+    if (periodo === 'dia') {
+        // Consulta para o período do dia atual
+        const obj = sequelize.query(`
+        SELECT DISTINCT u.nome, u.pontuacao_dia
+        FROM usuarios u
+        INNER JOIN usuarioRespostas ur ON u.id = ur.usuario_id 
+        WHERE ur.data_resposta BETWEEN '${anoAtual}-${mesAtual}-${diaAtual} 00:00:00' AND '${anoAtual}-${mesAtual}-${diaAtual} 23:59:59'
+        ORDER BY u.pontuacao_dia DESC
+        LIMIT 3;`)
+        return obj;
+    }
+}
+  async function atribuirConquistasTop3() {
+    let results = [];
+    const req = { params: { periodo: 'dia' } };
+    const top3Usuarios = await top3(req);
+
+    if (!top3Usuarios) {
+        throw 'Não há usuários suficientes para o ranking!';
+    }
+
+    const conquistaIds = [1, 2, 3];
+
+    for (let i = 0; i < top3Usuarios[0].length; i++) {
+        const usuario = await Usuario.findOne({ where: { nome: top3Usuarios[0][i].nome } });
+        if (!usuario) throw `Usuário ${top3Usuarios[0][i].nome} não encontrado!`;
+
+        let usuarioConquista = await UsuarioConquista.findOne({
+            where: {
+                usuarioId: usuario.dataValues.id,
+                conquistaId: conquistaIds[i]
+            }
+        });
+
+        if (usuarioConquista) {
+            await usuarioConquista.increment({quantidade: 1});
+            const usuarioAtualizado = await UsuarioConquista.findByPk(usuarioConquista.dataValues.id)
+
+            results.push({ usuario: usuarioAtualizado.dataValues, "message": "Usuário ganhou mais 1" });
+        }
+    }
+    console.log(results);
+    return results;
+}
 const adicionarVidasProgramada = async () => {
     try {
         const usuarios = await Usuario.findAll({
@@ -240,7 +237,9 @@ cron.schedule('0 0 * * *', async () => {
     await User.update({ pontuacaoAno: 0 });
   });
   
-  
+  cron.schedule('0 0 * * *', function() {
+    atribuirConquistasTop3();
+});
   
   
   
