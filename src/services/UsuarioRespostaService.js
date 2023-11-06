@@ -237,7 +237,7 @@ cron.schedule('0 0 * * *', async () => {
     await User.update({ pontuacaoAno: 0 });
   });
   
-  cron.schedule('0 0 * * *', function() {
+  cron.schedule('59 23 * * *', function() {
     atribuirConquistasTop3();
 });
   
