@@ -1,32 +1,34 @@
 import dotenv from 'dotenv';
 import express from "express";
-import sequelize from "./config/database-connections.js"; 
-import routes from "./routes.js";
+import routes from "./routes.js"; // Assume que as rotas já tenham o authMiddleware onde necessário
 import errorHandler from '../src/_middleware/error-handler.js';
-import authMiddleware from './_middleware/jwt-verify.js';
 
 dotenv.config();
 const app = express();
 
-// Habilitar CORS
-app.use(function (req, res, next) {
+// Configurações de CORS simplificadas
+app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-});
 
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
 
 app.use(express.json());
 
-// Middleware para verificação JWT deve vir antes das rotas
-app.use(authMiddleware);
-
+// As rotas são usadas aqui, e o authMiddleware é aplicado dentro de routes.js onde necessário
 app.use(routes);
 
-// Middleware para manipulação de erros deve vir após as rotas
+// Middleware para manipulação de erros
 app.use(errorHandler);
 
-app.listen(process.env.PORT || 3333, () => {
-    console.log(`Servidor rodando na porta ${process.env.PORT || 3333}`);
+// Iniciar o servidor
+const PORT = process.env.PORT || 3333;
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
