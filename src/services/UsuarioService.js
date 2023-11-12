@@ -13,7 +13,7 @@ class UsuarioService {
 
     static async findByPk(req) {
         const { id } = req.params;
-        const obj = await Usuario.findByPk(id, { include: { all: true, nested: true } });
+        const obj = await Usuario.findByPk(id);
         return obj;
     }
     //REGISTER
