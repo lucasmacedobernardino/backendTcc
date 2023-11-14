@@ -13,11 +13,12 @@ class Conquista extends Model {
             },
             imagem: {
                 type: DataTypes.BLOB,
-                allowNull: true, // Permitindo que a imagem possa ser nula, caso você queira
-                validate: {
-                    notEmpty: { msg: "A imagem não pode estar vazia!" }
-                }
-            }
+                allowNull: true,
+                get() {
+                    const image = this.getDataValue('imagem');
+                    return image ? Buffer.from(image).toString('base64') : null;
+                },
+            }            
         }, { sequelize, modelName: "conquista", tableName: "conquistas" });
     }
 

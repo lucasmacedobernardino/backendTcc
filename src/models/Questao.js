@@ -61,7 +61,12 @@ class Questao extends Model {
             imagem: {
                 type: DataTypes.BLOB,
                 allowNull: true,
+                get() {
+                    const image = this.getDataValue('imagem');
+                    return image ? Buffer.from(image).toString('base64') : null;
+                },
             }
+            
         }, { sequelize, modelName: "questao", tableName: "questoes" });
     }
     static associate(models) {

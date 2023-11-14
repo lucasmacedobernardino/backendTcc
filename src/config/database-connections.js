@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import { databaseConfigSQLite } from "./database-config.js";
-import fs from "fs"
+import * as fs from 'fs';
 import { Disciplina } from "../models/Disciplina.js";
 import { Questao } from "../models/Questao.js";
 import { Usuario } from "../models/Usuario.js";
@@ -37,7 +37,17 @@ function databaseInserts() {
         const disciplina4 = await Disciplina.create({ nome: "Geografia" });
         const disciplina5 = await Disciplina.create({ nome: "Ciências" });
         //QUESTOES DA PROVA 1-2022
-        const imagemBufferQuestao11_12 = fs.readFileSync('src/assets/imagemQuestao11-12.png');
+        const imagemBufferQuestao11_12 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao11-12.png')).toString('base64');
+        const imagemBufferQuestao16 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao16.png')).toString('base64');
+        const imagemBufferQuestao19 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao20.png')).toString('base64');
+        const imagemBufferQuestao22 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao22.png')).toString('base64');
+        const imagemBufferQuestao23 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao23.png')).toString('base64');
+        const imagemBufferQuestao31 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao31.png')).toString('base64');
+        const imagemBufferQuestao40 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao40.png')).toString('base64');
+
+        const crown = Buffer.from(fs.readFileSync('src/assets/crown.png')).toString('base64');
+        const emerald = Buffer.from(fs.readFileSync('src/assets/emerald.png')).toString('base64');
+        const diamond = Buffer.from(fs.readFileSync('src/assets/diamond.png')).toString('base64');
         const questao1 = await Questao.create({
             enunciado: `
 
@@ -871,7 +881,7 @@ function databaseInserts() {
             disciplinaId: 1,
         });
 
-        const imagemBufferQuestao16 = fs.readFileSync('src/assets/imagemQuestao16.png');
+        
         const questao16 = await Questao.create({
             enunciado: `
             A figura mostra o deslocamento de um avião que decolou na cidade A com destino a cidade 
@@ -921,7 +931,7 @@ function databaseInserts() {
             respostaCorreta: 'A',
             disciplinaId: 2, 
         });
-        const imagemBufferQuestao19 = fs.readFileSync('src/assets/imagemQuestao20.png');
+        
         const questao19 = await Questao.create({
             enunciado: `
             A figura abaixo apresenta o esquema de uma roda gigante. Esta roda gigante tem 60 metros de 
@@ -984,7 +994,7 @@ function databaseInserts() {
             respostaCorreta: 'C',
             disciplinaId: 2,
         });
-        const imagemBufferQuestao22 = fs.readFileSync('src/assets/imagemQuestao22.png');
+        
         const questao22 = await Questao.create({
             enunciado: `
             Em um quadrado mágico n x n (n linhas e n colunas), a soma dos números de cada linha, 
@@ -1000,7 +1010,7 @@ function databaseInserts() {
             disciplinaId: 2,
             imagem: imagemBufferQuestao22
         });
-        const imagemBufferQuestao23 = fs.readFileSync('src/assets/imagemQuestao23.png');
+        
         const questao23 = await Questao.create({
             enunciado: `
             A figura abaixo ilustra dois triângulos ABC e CDE. Sabendo que os ângulos AB^C, BC^D e CE^F
@@ -1117,7 +1127,7 @@ function databaseInserts() {
             respostaCorreta: 'A',
             disciplinaId: 5
         });
-        const imagemBufferQuestao31 = fs.readFileSync('src/assets/imagemQuestao31.png');
+        
         const questao31 = await Questao.create({
             enunciado: `
             O gráfico abaixo representa a variação da temperatura de ebulição dos líquidos I e II em 
@@ -1469,7 +1479,7 @@ function databaseInserts() {
             respostaCorreta: 'C',
             disciplinaId: 3
         });
-        const imagemBufferQuestao40 = fs.readFileSync('src/assets/imagemQuestao40.png');
+        
         const questao40 = await Questao.create({
             enunciado: `
             A imagem se refere à memória dos episódios ocorridos em 11 de setembro de 2001 nos 
@@ -1583,9 +1593,7 @@ function databaseInserts() {
         });
         //PROVA 60-2022
         //Conqustas
-        const crown = fs.readFileSync('src/assets/crown.png');
-        const emerald = fs.readFileSync('src/assets/emerald.png');
-        const diamond = fs.readFileSync('src/assets/diamond.png');
+        
         const conquista1 = await Conquista.create({imagem: crown, nome: "Coroa"})
         const conquista2 = await Conquista.create({imagem: emerald, nome: "Esmeralda"})
         const conquista3 = await Conquista.create({imagem: diamond, nome: "Diamante"})
