@@ -38,7 +38,7 @@ class UsuarioService {
           await UsuarioConquista.create({usuarioId: obj.dataValues.id, conquistaId: conquista2.dataValues.id})
           await UsuarioConquista.create({usuarioId: obj.dataValues.id, conquistaId: conquista3.dataValues.id})
         }
-        return await Usuario.findByPk(obj.id, { include: { all: true, nested: true } });
+        return {message: "Usuário criado com Sucesso!", usuario: await Usuario.findByPk(obj.id, { include: { all: true, nested: true } })}
     }
 
     static async update(req) {
