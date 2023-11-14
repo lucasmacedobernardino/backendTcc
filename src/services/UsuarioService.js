@@ -70,15 +70,13 @@ class UsuarioService {
 
       const senhaCorrespondente = await bcrypt.compare(senha, user.dataValues.senha);
       if (senhaCorrespondente){
-        const SECRET_KEY = process.env.JWT_SECRET_KEY
-
         const payload = {
           id: user.dataValues.id,
           email: user.dataValues.email, 
           nome: user.dataValues.nome
       };
 
-      const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1d' });
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
 
         return {
                 token: token, 
