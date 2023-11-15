@@ -1,6 +1,7 @@
 import { Questao } from "../models/Questao.js";
 import { Usuario } from "../models/Usuario.js";
 import sequelize from "../config/database-connections.js";
+import { Disciplina } from "../models/Disciplina.js";
 class QuestaoService {
 
     static async findAll() {
@@ -15,7 +16,6 @@ class QuestaoService {
     }
 
     static async findByDisciplina(req) {
-        console.log(req.userId);
         const disciplinaId = req.params.id;
         const userId = req.userId; // Supondo que o ID do usuário esteja disponível aqui após autenticação.
     
@@ -61,6 +61,46 @@ class QuestaoService {
         }
     }
     
+    static async findSomeQuestion(req) {
+        const userId = req.userId; // Supondo que o ID do usuário esteja disponível aqui após autenticação.
+        // Busca o usuário pelo ID para verificar a quantidade de vidas
+        try {
+            const usuario = await Usuario.findByPk(userId);
+            if (!usuario) {
+                return { message: "Usuário não encontrado." };
+            }
+            // Verifica as vidas do usuário
+            if (usuario.vidas <= 0) {
+                return { message: "Você não tem vidas disponíveis." };
+            }
+        } catch (error) {
+            console.error("Erro ao buscar usuário:", error);
+            return { message: "Erro ao buscar usuário. Por favor, tente novamente mais tarde." };
+        }
+        // Busca a questão para a disciplina especificada
+        try {
+            const disciplinas = await Disciplina.findAll({
+                attributes: ['id']
+            });
+            console.log("Ids: ", disciplinas.length)
+            const disciplinaIds = disciplinas.map(d => d.id);
+            const disciplinaIdAleatorio = disciplinaIds[Math.floor(Math.random() * disciplinaIds.length)];
+            const questaoAleatoria = await Questao.findOne({
+                where: { disciplinaId: disciplinaIdAleatorio },
+                order: sequelize.literal('random()'),
+                // inclua outros modelos relacionados aqui se necessário
+            });
+    
+            if (!questaoAleatoria) {
+                return { message: "Nenhuma questão encontrada." };
+            }
+    
+            return { data: questaoAleatoria };
+        } catch (error) {
+            console.error("Erro ao buscar questão aleatória:", error);
+            return { message: "Erro ao buscar questão aleatória. Por favor, tente novamente mais tarde." };
+        }
+    }
     
     static async create(req) {
         const { enunciado, disciplina, opcao1, opcao2, opcao3, opcao4, opcao5, respostaCorreta} = req.body;

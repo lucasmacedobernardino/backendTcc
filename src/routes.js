@@ -19,6 +19,7 @@ routes.delete('/disciplinas/:id', DisciplinaController.delete);
 routes.get('/questoes', QuestaoController.findAll);
 routes.get('/questoes/:id', QuestaoController.findByPk);
 routes.get('/questoes/disciplinas/:id', authMiddleware, QuestaoController.findByDisciplina);
+routes.get('/questoes/disciplinas/aleatorio/:id', authMiddleware, QuestaoController.findSomeQuestion);
 routes.post('/questoes', QuestaoController.create);
 routes.put('/questoes/:id', QuestaoController.update);
 routes.delete('/questoes/:id', QuestaoController.delete);

@@ -18,6 +18,11 @@ class QuestaoController {
             .then(obj => res.json(obj))
             .catch(next);
     }
+    static async findSomeQuestion(req, res, next){
+        QuestaoService.findSomeQuestion(req)
+            .then(obj => res.json(obj))
+            .catch(next);
+    }
 
     static async create(req, res, next) {
         QuestaoService.create(req)
