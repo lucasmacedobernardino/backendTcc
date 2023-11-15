@@ -1151,7 +1151,8 @@ function databaseInserts() {
             opcao4: `apenas a afirmativa I é verdadeira.`,
             opcao5: `apenas a afirmativa IV é verdadeira.`,
             respostaCorreta: 'E',
-            disciplinaId: 5
+            disciplinaId: 5,
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao31.png"
         });
 
         const questao32 = await Questao.create({
