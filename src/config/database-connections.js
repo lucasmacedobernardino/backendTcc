@@ -37,17 +37,10 @@ function databaseInserts() {
         const disciplina4 = await Disciplina.create({ nome: "Geografia" });
         const disciplina5 = await Disciplina.create({ nome: "Ciências" });
         //QUESTOES DA PROVA 1-2022
-        const imagemBufferQuestao11_12 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao11-12.png')).toString('base64');
-        const imagemBufferQuestao16 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao16.png')).toString('base64');
-        const imagemBufferQuestao19 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao20.png')).toString('base64');
-        const imagemBufferQuestao22 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao22.png')).toString('base64');
-        const imagemBufferQuestao23 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao23.png')).toString('base64');
-        const imagemBufferQuestao31 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao31.png')).toString('base64');
-        const imagemBufferQuestao40 = Buffer.from(fs.readFileSync('src/assets/imagemQuestao40.png')).toString('base64');
 
-        const crown = Buffer.from(fs.readFileSync('src/assets/crown.png')).toString('base64');
-        const emerald = Buffer.from(fs.readFileSync('src/assets/emerald.png')).toString('base64');
-        const diamond = Buffer.from(fs.readFileSync('src/assets/diamond.png')).toString('base64');
+        const crown = "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/crown.png"
+        const emerald = "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/emerald.png"
+        const diamond = "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/diamond.png"
         const questao1 = await Questao.create({
             enunciado: `
 
@@ -714,7 +707,7 @@ function databaseInserts() {
             anunciante e um conceito ecológico de sustentabilidade.`,
             respostaCorreta: 'A',
             disciplinaId: 1,
-            imagem: imagemBufferQuestao11_12
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao11-12.png"
         });
 
         const questao12 = await Questao.create({
@@ -732,7 +725,7 @@ function databaseInserts() {
             opcao5: `A segunda oração possui um sujeito desinencial.`,
             respostaCorreta: 'C',
             disciplinaId: 1,
-            imagem: imagemBufferQuestao11_12
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao11-12.png"
         });
 
         const questao13 = await Questao.create({
@@ -900,7 +893,7 @@ function databaseInserts() {
             opcao5: `às bolhas que flutuam no ar, espalhadas pelo vento.`,
             respostaCorreta: 'C',
             disciplinaId: 2,
-            imagem: imagemBufferQuestao16
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao16.png"
         });
         //QUESTÃO 18 DA PROVA 01-2020
         const questao17 = await Questao.create({
@@ -952,7 +945,7 @@ function databaseInserts() {
             opcao5: `Sobre o eixo-x`,
             respostaCorreta: 'C',
             disciplinaId: 2,
-            imagem: imagemBufferQuestao19
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao20.png"
         });
         const questao20 = await Questao.create({
             enunciado: `
@@ -1008,7 +1001,7 @@ function databaseInserts() {
             opcao5: `72`,
             respostaCorreta: 'D',
             disciplinaId: 2,
-            imagem: imagemBufferQuestao22
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao22.png"
         });
         
         const questao23 = await Questao.create({
@@ -1024,7 +1017,7 @@ function databaseInserts() {
             opcao5: `19/13`,
             respostaCorreta: 'C',
             disciplinaId: 2,
-            imagem: imagemBufferQuestao23
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao23.png"
         });
         const questao24 = await Questao.create({
             enunciado: `
@@ -1501,7 +1494,7 @@ function databaseInserts() {
             dezembro de 2001.`,
             respostaCorreta: 'D',
             disciplinaId: 3,
-            imagem: imagemBufferQuestao40
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao40.png"
         });
         const questao41 = await Questao.create({
             enunciado: `
