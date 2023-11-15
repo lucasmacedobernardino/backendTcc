@@ -1585,6 +1585,469 @@ function databaseInserts() {
             respostaCorreta: 'E',
             disciplinaId: 3
         });
+        const questao44 = await Questao.create({
+            enunciado: `
+            O texto a seguir é um trecho da obra “O diário 
+            de Anne Frank”, escrito por uma menina judia 
+            que relata os sentimentos vividos por ela e pela 
+            família que lutam para sobreviver ao Holocausto 
+            e, para isso, ficam escondidos por anos em um 
+            sótão de uma casa na cidade de Amsterdã.
+            O DIÁRIO DE ANNE FRANK
+            [...]
+            Um grande incêndio assim não é uma 
+            visão agradável, mas felizmente, para 
+            nós, o bombardeio havia terminado, e 
+            voltamos às nossas tarefas. Assim que 
+            começamos a jantar, soou outro alarme 
+            antiaéreo. A comida estava boa, mas 
+            perdi o apetite no momento em que ouvi 
+            a sirene. No entanto, nada aconteceu, e 45 
+            minutos depois ouvimos o toque dizendo 
+            que o perigo passara. Depois de os pratos 
+            serem lavados, outro alarme antiaéreo, 
+            tiros de canhão e enxames de aviões. Ah, 
+            meu Deus, duas vezes num dia, pensamos. Isso é demais. De pouco adiantou, 
+            porque mais uma vez as bombas choveram, dessa vez do outro lado da cidade. 
+            De acordo com os noticiários ingleses, o 
+            aeroporto Schiphol fora bombardeado. 
+            Os aviões mergulhavam e subiam, o ar 
+            zumbia com o barulho dos motores. Foi 
+            muito assustador, e o tempo todo eu 
+            ficava pensando: “Lá vem ela, é essa.”
+            Posso garantir que, quando fui para a 
+            cama às nove horas, minhas pernas ainda 
+            tremiam. Quando bateu a meia-noite, 
+            acordei de novo: mais aviões! [...] Fiquei 
+            na cama do papai até as duas horas. Mas 
+            os aviões continuavam chegando. Por 
+            fim, eles pararam de disparar e pude voltar de novo para “casa”. Finalmente caí no 
+            sono às duas e meia.
+            [...]
+
+            FRANK, Anne. O diário de Anne Frank: edição 
+            integral. Tradução de Ivanir Alves Calado. 42.ed. 
+            Rio de Janeiro: Record, 2014, p. 124-125.
+
+            O gênero textual diário, comumente, apresenta um relato pessoal e 
+            possui características bem específicas, entre elas o uso de 1ª 
+            pessoa. Assinale a alternativa que apresenta essa característica.
+            `,
+            opcao1: `“Um grande incêndio assim não é uma visão agradável.”`,
+            opcao2: `“Os aviões mergulhavam e subiam, o ar zumbia com o barulho dos motores.”`,
+            opcao3: `“Depois de os pratos serem lavados, outro alarme antiaéreo, tiros de canhão e enxames de aviões.`,
+            opcao4: `“Assim que começamos a jantar, soou outro alarme antiaéreo.”`,
+            opcao5: `“De acordo com os noticiários ingleses, o aeroporto Schiphol fora bombardeado.”`,
+            respostaCorreta: 'D',
+            disciplinaId: 1,
+        });
+        const questao45 = await Questao.create({
+            enunciado: `
+            O texto a seguir é um trecho da obra “O diário 
+            de Anne Frank”, escrito por uma menina judia 
+            que relata os sentimentos vividos por ela e pela 
+            família que lutam para sobreviver ao Holocausto 
+            e, para isso, ficam escondidos por anos em um 
+            sótão de uma casa na cidade de Amsterdã.
+            O DIÁRIO DE ANNE FRANK
+            [...]
+            Um grande incêndio assim não é uma 
+            visão agradável, mas felizmente, para 
+            nós, o bombardeio havia terminado, e 
+            voltamos às nossas tarefas. Assim que 
+            começamos a jantar, soou outro alarme 
+            antiaéreo. A comida estava boa, mas 
+            perdi o apetite no momento em que ouvi 
+            a sirene. No entanto, nada aconteceu, e 45 
+            minutos depois ouvimos o toque dizendo 
+            que o perigo passara. Depois de os pratos 
+            serem lavados, outro alarme antiaéreo, 
+            tiros de canhão e enxames de aviões. Ah, 
+            meu Deus, duas vezes num dia, pensamos. Isso é demais. De pouco adiantou, 
+            porque mais uma vez as bombas choveram, dessa vez do outro lado da cidade. 
+            De acordo com os noticiários ingleses, o 
+            aeroporto Schiphol fora bombardeado. 
+            Os aviões mergulhavam e subiam, o ar 
+            zumbia com o barulho dos motores. Foi 
+            muito assustador, e o tempo todo eu 
+            ficava pensando: “Lá vem ela, é essa.”
+            Posso garantir que, quando fui para a 
+            cama às nove horas, minhas pernas ainda 
+            tremiam. Quando bateu a meia-noite, 
+            acordei de novo: mais aviões! [...] Fiquei 
+            na cama do papai até as duas horas. Mas 
+            os aviões continuavam chegando. Por 
+            fim, eles pararam de disparar e pude voltar de novo para “casa”. Finalmente caí no 
+            sono às duas e meia.
+            [...]
+
+            FRANK, Anne. O diário de Anne Frank: edição 
+            integral. Tradução de Ivanir Alves Calado. 42.ed. 
+            Rio de Janeiro: Record, 2014, p. 124-125.
+
+            No período “A comida estava boa, mas perdi o 
+            apetite no momento em que ouvi a sirene”, o 
+            vocábulo destacado expressa uma relação de 
+            oposição entre as orações. Assinale a alternativa em que a conjunção 
+            possui o mesmo sentido, ou seja, é uma conjunção adversativa.
+            `,
+            opcao1: `“A comida estava boa, logo perdi o apetite no momento em que ouvi a sirene”`,
+            opcao2: `“A comida estava boa, contudo perdi o apetite no momento em que ouvi a sirene”`,
+            opcao3: `“A comida estava boa, por isso perdi o apetite no momento em que ouvi a sirene”`,
+            opcao4: `“A comida estava boa, porquanto perdi o apetite no momento em que ouvi a sirene”`,
+            opcao5: `“A comida estava boa, contanto que perdi o apetite no momento em que ouvi a sirene”`,
+            respostaCorreta: 'B',
+            disciplinaId: 1,
+        });
+
+        const questao46 = await Questao.create({
+            enunciado: `
+            O texto a seguir é um trecho da obra “O diário 
+            de Anne Frank”, escrito por uma menina judia 
+            que relata os sentimentos vividos por ela e pela 
+            família que lutam para sobreviver ao Holocausto 
+            e, para isso, ficam escondidos por anos em um 
+            sótão de uma casa na cidade de Amsterdã.
+            O DIÁRIO DE ANNE FRANK
+            [...]
+            Um grande incêndio assim não é uma 
+            visão agradável, mas felizmente, para 
+            nós, o bombardeio havia terminado, e 
+            voltamos às nossas tarefas. Assim que 
+            começamos a jantar, soou outro alarme 
+            antiaéreo. A comida estava boa, mas 
+            perdi o apetite no momento em que ouvi 
+            a sirene. No entanto, nada aconteceu, e 45 
+            minutos depois ouvimos o toque dizendo 
+            que o perigo passara. Depois de os pratos 
+            serem lavados, outro alarme antiaéreo, 
+            tiros de canhão e enxames de aviões. Ah, 
+            meu Deus, duas vezes num dia, pensamos. Isso é demais. De pouco adiantou, 
+            porque mais uma vez as bombas choveram, dessa vez do outro lado da cidade. 
+            De acordo com os noticiários ingleses, o 
+            aeroporto Schiphol fora bombardeado. 
+            Os aviões mergulhavam e subiam, o ar 
+            zumbia com o barulho dos motores. Foi 
+            muito assustador, e o tempo todo eu 
+            ficava pensando: “Lá vem ela, é essa.”
+            Posso garantir que, quando fui para a 
+            cama às nove horas, minhas pernas ainda 
+            tremiam. Quando bateu a meia-noite, 
+            acordei de novo: mais aviões! [...] Fiquei 
+            na cama do papai até as duas horas. Mas 
+            os aviões continuavam chegando. Por 
+            fim, eles pararam de disparar e pude voltar de novo para “casa”. Finalmente caí no 
+            sono às duas e meia.
+            [...]
+
+            FRANK, Anne. O diário de Anne Frank: edição 
+            integral. Tradução de Ivanir Alves Calado. 42.ed. 
+            Rio de Janeiro: Record, 2014, p. 124-125.
+
+            Analise as afirmativas a seguir e julgue se são 
+            Verdadeiras ou Falsas:
+            I – Em “ouvimos o toque dizendo que o 
+            perigo passara” podemos afirmar que a oração em destaque tem a função sintática de um 
+            objeto direto do período anterior sendo, portanto, uma oração subordinada substantiva 
+            objetiva direta.
+            II – Na oração “Posso garantir que, quando 
+            fui para a cama às nove horas, minhas pernas ainda tremiam”, o período em destaque 
+            exprime a ideia de condição para Anne dormir 
+            e, sintaticamente, temos uma oração subordinada adverbial condicional intercalada a 
+            uma oração subordinada substantiva objetiva 
+            direta.
+            III – No período “Por fim, eles pararam de 
+            disparar e pude voltar de novo para ‘casa’” é 
+            possível substituir o termo por fim por contudo
+            sem alterar o sentido da oração que expressa 
+            a ideia de conclusão.
+            IV – Em “Assim que começamos a jantar, 
+            soou outro alarme antiaéreo” o uso da vírgula 
+            é obrigatório pelo fato de a oração subordinada adverbial estar deslocada, ou seja, invertida em relação à oração principal.
+            V – Na oração “o bombardeio havia terminado, e voltamos às nossas tarefas”, observamos que o segundo período é uma oração 
+            coordenada que exprime a ideia de oposição 
+            em relação à primeira e o uso da vírgula é 
+            opcional por se tratar de orações coordenadas 
+            com sujeitos diferentes.
+            Após a análise das afirmativas acima, assinale 
+            a alternativa que possui a sequência correta:
+            `,
+            opcao1: `V-V-F-V-F`,
+            opcao2: `F-V-F-F-V`,
+            opcao3: `V-F-V-V-F`,
+            opcao4: `V-F-F-V-V`,
+            opcao5: `V-F-F-V-F`,
+            respostaCorreta: 'E',
+            disciplinaId: 1,
+        });
+
+        const questao47 = await Questao.create({
+            enunciado: `
+            A seguir, leia o trecho que faz parte do livro 
+            “Valentes”, o qual retrata histórias de pessoas 
+            refugiadas no Brasil. Nessa passagem, há um 
+            recorte da história de Roquia Atbai, afegã, que 
+            veio para o Brasil em 2002 junto com a família num pedido de reassentamento, já que na 
+            Índia, país em que estavam, enfrentavam dificuldades como arranjar emprego e, portanto, 
+            para sobrevivência.
+            ROQUIA ATBAI
+            “Minissaia, vestido curto, biquíni. Às 
+            vezes, o sonho de uma vida melhor pode 
+            passar por elementos tão simples quanto 
+            esses, mas que representam uma liberdade cultural que muitas mulheres não 
+            têm. A afegã Roquia Atbai não tinha. Ela 
+            vivia numa sociedade dominada pelo 
+            machismo estrutural e costumes bastante opressores para as mulheres. Não 
+            teve muitas opções de carreira quando 
+            quis trabalhar. Também não pôde escolher seu marido – aliás, nem o conhecia quando se casou. Na relação, nunca 
+            teve a mesma voz. Jamais poderia usar 
+            as peças de roupa citadas acima, que só 
+            experimentou depois de pedir refúgio no 
+            Brasil, num processo de reassentamento, 
+            vinda da Índia, para onde tinha escapado 
+            por causa da guerra do Afeganistão. Ela 
+            fugiu para proteger a vida de sua família, 
+            mas acabou salvando muito mais do que 
+            isso: sua independência e felicidade.”
+            
+            CARARO, Aryane; SOUZA, Duda Porto de. 
+            Valentes: Histórias de pessoas refugiadas 
+            no Brasil. 1.ed. São Paulo: Seguinte, 2020. 
+            Ilustrações de Rafaela Vilela. P. 90.
+
+            Após a leitura do texto acima, podemos compreender que:
+            `,
+            opcao1: `No Brasil, é possível que as mulheres escolham suas vestimentas por haver liberdade 
+            cultural, se compararmos com outros países, como o Afeganistão. Por isso, Roquia 
+            Atbai, após pisar em terras brasileiras, pôde, 
+            por exemplo, escolher usar uma saia curta.`,
+            opcao2: `O Afeganistão, antes da ocupação do Talibã, 
+            era um país um pouco mais liberal, e as 
+            mulheres, por exemplo, poderiam estudar, 
+            ter uma profissão e escolher o seu marido.`,
+            opcao3: `A Índia foi o primeiro destino de Roquia 
+            Atbai para fugir da guerra do Afeganistão e, naquele lugar, ela conquistou seu 
+            espaço não necessitando ser tão submissa 
+            e podendo utilizar as vestimentas que quisesse, como um vestido mais curto.`,
+            opcao4: `O machismo estrutural não ocorre somente 
+            no Afeganistão, mas em muitos outros 
+            países, inclusive no Brasil. Porém, nos últimos anos, esse problema vem diminuindo, 
+            prova disso é o fato de as mulheres poderem usar as vestimentas que bem entenderem sem que haja comentários maldosos 
+            por alguns homens.`,
+            opcao5: `Os casamentos arranjados são uma forma 
+            de as famílias afegãs saírem da extrema 
+            pobreza, por isso vendem suas filhas por 
+            um valor considerável para homens bem 
+            mais velhos e, com isso, garantem um 
+            futuro melhor para as meninas que aprendem a conviver e a amar os maridos.`,
+            respostaCorreta: 'A',
+            disciplinaId: 1,
+        });
+
+        const questao48 = await Questao.create({
+            enunciado: `
+            A seguir, leia o trecho que faz parte do livro 
+            “Valentes”, o qual retrata histórias de pessoas 
+            refugiadas no Brasil. Nessa passagem, há um 
+            recorte da história de Roquia Atbai, afegã, que 
+            veio para o Brasil em 2002 junto com a família num pedido de reassentamento, já que na 
+            Índia, país em que estavam, enfrentavam dificuldades como arranjar emprego e, portanto, 
+            para sobrevivência.
+            ROQUIA ATBAI
+            “Minissaia, vestido curto, biquíni. Às 
+            vezes, o sonho de uma vida melhor pode 
+            passar por elementos tão simples quanto 
+            esses, mas que representam uma liberdade cultural que muitas mulheres não 
+            têm. A afegã Roquia Atbai não tinha. Ela 
+            vivia numa sociedade dominada pelo 
+            machismo estrutural e costumes bastante opressores para as mulheres. Não 
+            teve muitas opções de carreira quando 
+            quis trabalhar. Também não pôde escolher seu marido – aliás, nem o conhecia quando se casou. Na relação, nunca 
+            teve a mesma voz. Jamais poderia usar 
+            as peças de roupa citadas acima, que só 
+            experimentou depois de pedir refúgio no 
+            Brasil, num processo de reassentamento, 
+            vinda da Índia, para onde tinha escapado 
+            por causa da guerra do Afeganistão. Ela 
+            fugiu para proteger a vida de sua família, 
+            mas acabou salvando muito mais do que 
+            isso: sua independência e felicidade.”
+            
+            CARARO, Aryane; SOUZA, Duda Porto de. 
+            Valentes: Histórias de pessoas refugiadas 
+            no Brasil. 1.ed. São Paulo: Seguinte, 2020. 
+            Ilustrações de Rafaela Vilela. P. 90.
+
+            Na sentença “Minissaia, vestido curto, biquíni”, 
+            logo no início do texto, notamos que há uma 
+            enumeração de peças do vestuário feminino, 
+            as quais são separadas por vírgulas. Marque 
+            a alternativa em que essa regra de uso da vírgula se aplica, ou seja, a vírgula é utilizada para 
+            separar elementos sintáticos em uma enumeração.
+            `,
+            opcao1: `Roquia, que nasceu em 1971, conseguiu 
+            estudar e se formar como professora.” 
+            (CARARO & SOUZA, 2020, p. 90)`,
+            opcao2: `Quando Roquia nasceu, as afegãs tinham 
+            mais direitos do que atualmente, mais de 
+            quarenta anos depois.” (CARARO & SOUZA, 
+            2020, p. 90)`,
+            opcao3: `No conflito, Roquia perdeu dois irmãos, 
+            uma cunhada, um tio e um primo.” (CARARO 
+            & SOUZA, 2020, p. 93)`,
+            opcao4: `A casa, um imóvel confortável de quatro quartos, foi fechada como se a família 
+            tivesse ido ao mercado.” (CARARO & SOUZA, 
+            2020, p. 93)`,
+            opcao5: `Mas, depois de um ano, Roquia conseguiu 
+            emprego como esteticista e maquiadora, 
+            levando para a região a técnica indiana de 
+            depilação de sobrancelha com linha – era 
+            tão inusitado na época que saiu no jornal 
+            Zero Hora e em uma emissora de TV local.” 
+            (CARARO & SOUZA, 2020, p. 94-95)`,
+            respostaCorreta: 'C',
+            disciplinaId: 1,
+        });
+        const questao49 = await Questao.create({
+            enunciado: `
+            A unidade de medida usada no armazenamento e transmissão de informações na computação é o Byte, que equivale a 8 bits, sendo 
+            este a base do sistema binário. O sistema se 
+            baseia nas potências de 2. Assim, de acordo 
+            com a tabela a seguir, um pen drive com uma 
+            memória de 10 KB, pode armazenar 10 x 1.024 
+            Bytes = 10.240 Bytes = 81.920 bits.
+
+            Se uma rede de internet pode transmitir 2.048 
+            Kbps (2.048 kilobits por segundo), qual a velocidade em KBps (kilobytes por segundo) dessa 
+            rede?
+            `,
+            opcao1: `512`,
+            opcao2: `256`,
+            opcao3: `128`,
+            opcao4: `32`,
+            opcao5: `2`,
+            respostaCorreta: 'B',
+            disciplinaId: 2, 
+            imagem: "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/imagemQuestao49.png"
+        });
+
+        const questao50 = await Questao.create({
+            enunciado: `
+            As paisagens do campo (rurais) apresentam 
+            características diferentes das paisagens da 
+            cidade (urbanas). Em relação às características 
+            das paisagens do campo, assinale a alternativa 
+            CORRETA:
+            `,
+            opcao1: `Predominam atividades econômicas do setor terciário, ou seja, comércio e serviços.`,
+            opcao2: `Há o predomínio de atividades industriais.`,
+            opcao3: `São caracterizadas pela verticalização, ou 
+            seja, a construção de edifícios cada vez 
+            mais altos para abrigar a população em 
+            crescimento.
+            `,
+            opcao4: `As paisagens rurais agrícolas não são influenciadas por elementos naturais, como o relevo, 
+            o solo e o clima.`,
+            opcao5: `Formam os espaços utilizados pelos seres 
+            humanos para, sobretudo, desenvolver 
+            as atividades econômicas do setor primário da economia: agricultura, pecuária e 
+            extrativismo.`,
+            respostaCorreta: 'E',
+            disciplinaId: 4, 
+        });
+        const questao51 = await Questao.create({
+            enunciado: `
+            O desenvolvimento do turismo como atividade 
+            econômica é uma alternativa à necessidade 
+            de criar empregos, reduzir as desigualdades 
+            regionais e distribuir melhor a renda em um 
+            país. Em 2015, os países mais visitados do 
+            mundo eram França, Estados Unidos, Espanha, China e Itália. Assinale a alternativa que 
+            corresponde a uma causa de crescimento do 
+            turismo:`,
+            opcao1: `O aumento do poder de compra de algumas 
+            populações, que assim podem destinar 
+            uma parte cada vez maior de suas finanças 
+            a atividades de lazer e de cultura.`,
+            opcao2: `Restrições à obtenção de vistos por parte de países receptores.`,
+            opcao3: `A oferta limitada de atrativos turísticos.`,
+            opcao4: `Dificuldade de obtenção de documentos de viagem, como passaporte.`,
+            opcao5: `A oferta limitada de infraestrutura turística.`,
+            respostaCorreta: 'A',
+            disciplinaId: 4, 
+        });
+        const questao52 = await Questao.create({
+            enunciado: `A implementação de um sistema global de 
+            localização por satélite, o Beidou, a construção de uma estação espacial própria e os 
+            investimentos no setor energético (destinados 
+            a buscar soluções ambientais e a ampliar a 
+            capacidade de energia considerada limpa e de 
+            ponta) estão entre algumas das iniciativas de 
+            um país que pretende ampliar sua influência 
+            global. Esse país é:`,
+            opcao1: `a Índia.`,
+            opcao2: `a França.`,
+            opcao3: `a Rússia.`,
+            opcao4: `a China.`,
+            opcao5: ` a Austrália.`,
+            respostaCorreta: 'D',
+            disciplinaId: 4, 
+        });
+        const questao53 = await Questao.create({
+            enunciado: `Os manguezais se caracterizam pelo equilíbrio 
+            delicado e pela imensa importância ecológica. 
+            No estado do Espírito Santo, eles contribuem 
+            para dar vida a uma tradição secular, a fabricação da panela de barro, herança das culturas 
+            indígenas tupi-guarani, que tem sido transmitida por várias gerações. Entretanto, há décadas o manguezal vem sendo muito ameaçado, 
+            quando não destruído. Assinale a alternativa 
+            que traz um aspecto do manguezal:`,
+            opcao1: `É fundamental para a reprodução e sobrevivência de animais marinhos`,
+            opcao2: `Não é afetado pelos processos de urbanização e especulação imobiliária.`,
+            opcao3: `A espécie vegetal predominante é a Araucária.`,
+            opcao4: `É ameaçado pela expansão da sojicultura.`,
+            opcao5: `Não enfrenta riscos ambientais.`,
+            respostaCorreta: 'A',
+            disciplinaId: 4, 
+        });
+        const questao54 = await Questao.create({
+            enunciado: `A globalização atual é marcada pela intensa 
+            integração econômica, política e cultural entre 
+            os países. Assinale a alternativa que corresponde a um aspecto corretamente relacionado ao processo de globalização:`,
+            opcao1: `Com o fim da Guerra Fria, os fluxos de mercadorias, serviços e capitais tornaram-se 
+            menos intensos com a integração dos países que eram socialistas ao mercado internacional.`,
+            opcao2: `A partir da segunda metade do século XX, as 
+            grandes empresas industriais, comerciais e de prestação de serviços começaram a instalar filiais em vários países. `,
+            opcao3: `A globalização não impôs a padronização 
+            de uma série de hábitos de consumo.`,
+            opcao4: `O processo de expansão do socialismo levou 
+            à constituição da economia global, impulsionada pelo desenvolvimento tecnológico.`,
+            opcao5: `Nas últimas décadas, o fluxo de mercadorias no comércio entre os países reduziu rapidamente.`,
+            respostaCorreta: 'B',
+            disciplinaId: 4, 
+        });
+        const questao55 = await Questao.create({
+            enunciado: `A América Latina apresentou áreas de conflito 
+            e de tensões em regiões de fronteira nos séculos XX e XXI. Uma das tensões fronteiriças foi a 
+            Guerra das Malvinas, ocorrida entre Argentina 
+            e Reino Unido, em 1982. Assinale a alternativa 
+            CORRETA sobre o resultado desse conflito:`,
+            opcao1: `Após a rendição argentina, o domínio das 
+            Ilhas Malvinas foi transferido para o Reino 
+            Unido e o impasse foi resolvido, pois a 
+            Argentina não mantém o desejo de recuperar esse território.`,
+            opcao2: `O Reino Unido vendeu o território das Ilhas 
+            Malvinas para a Argentina, encerrando o 
+            conflito.`,
+            opcao3: `A Argentina se rendeu, e as Ilhas Malvinas 
+            continuaram sob o domínio do Reino Unido.`,
+            opcao4: `A Argentina obteve posse do arquipélago 
+            das Malvinas, porém o Reino Unido obteve 
+            direitos sobre o petróleo que poderá ser 
+            encontrado nas águas dessa área.`,
+            opcao5: `O Reino Unido se rendeu, e as Ilhas Malvinas passaram ao domínio da Argentina`,
+            respostaCorreta: 'C',
+            disciplinaId: 4, 
+        });
         //PROVA 60-2022
         //Conqustas
         
