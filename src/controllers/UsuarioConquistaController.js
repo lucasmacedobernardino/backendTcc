@@ -6,7 +6,11 @@ class UsuarioConquistaController {
             .then(objs => res.json(objs))
             .catch(next);
     }
-
+    static async getQuantidadeConquistasPorUsuario(req, res, next){
+        UsuarioConquistaService.getQuantidadeConquistasPorUsuario(req)
+            .then(obj => res.json(obj))
+            .catch(next);
+    }
     static async findByPk(req, res, next) {
         UsuarioConquistaService.findByPk(req)
             .then(obj => res.json(obj))

@@ -4,7 +4,6 @@ import { Usuario } from "../models/Usuario.js";
 import { Sequelize } from "sequelize";
 import cron from "node-cron";
 import sequelize from "../config/database-connections.js";
-import { Conquista } from "../models/Conquista.js";
 import { UsuarioConquista } from "../models/UsuarioConquista.js";
 class UsuarioRespostaService {
 

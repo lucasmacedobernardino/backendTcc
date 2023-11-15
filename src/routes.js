@@ -49,6 +49,7 @@ routes.put('/conquista/:id', ConquistaController.update);
 
 routes.get('/usuarioconquista', UsuarioConquistaController.findAll);
 routes.get('/usuarioconquista/:id', UsuarioConquistaController.findByPk);
+routes.get('/usuarioconquista/quantidade/:id', UsuarioConquistaController.getQuantidadeConquistasPorUsuario)
 routes.post('/usuarioconquista', UsuarioConquistaController.create);
 routes.delete('/usuarioconquista/:id', UsuarioConquistaController.delete);
 routes.put('/usuarioconquista/:id', UsuarioConquistaController.update);
