@@ -20,7 +20,7 @@ class UsuarioRespostaController {
 
     static async create(req, res, next) {
         UsuarioRespostaService.create(req)
-            .then(obj => res.json(obj,201))
+            .then(obj => res.json(obj))
             .catch(next);
     }
 
