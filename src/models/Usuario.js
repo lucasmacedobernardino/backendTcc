@@ -28,31 +28,58 @@ class Usuario extends Model {
                     notEmpty: { msg: "A senha não pode ser vazia!" }
                 }
             },
-            pontuacao_dia: {
+            pontuacao: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
                 validate: {
-                    notNull: { msg: "A pontuação do dia não pode ser nula!" },
-                    notEmpty: { msg: "A pontuação do dia não pode ser vazia!" }
+                    notNull: { msg: "A pontuação não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação não pode ser vazia!" }
                 }
             },
-            pontuacao_mes: {
+            pontuacaoPortugues: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
                 validate: {
-                    notNull: { msg: "A pontuação do mês não pode ser nula!" },
-                    notEmpty: { msg: "A pontuação do mês não pode ser vazia!" }
+                    notNull: { msg: "A pontuação de português não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação de português não pode ser vazia!" }
                 }
             },
-            pontuacao_ano: {
+            pontuacaoMatematica: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
                 validate: {
-                    notNull: { msg: "A pontuação do ano não pode ser nula!" },
-                    notEmpty: { msg: "A pontuação do ano não pode ser vazia!" }
+                    notNull: { msg: "A pontuação de matemática não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação de matemática não pode ser vazia!" }
+                }
+            },
+            pontuacaoHistoria: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+                validate: {
+                    notNull: { msg: "A pontuação de história não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação de história não pode ser vazia!" }
+                }
+            },
+            pontuacaoGeografia: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+                validate: {
+                    notNull: { msg: "A pontuação de geografia não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação de geografia não pode ser vazia!" }
+                }
+            },
+            pontuacaoCiencia: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+                validate: {
+                    notNull: { msg: "A pontuação de ciência não pode ser nula!" },
+                    notEmpty: { msg: "A pontuação de ciência não pode ser vazia!" }
                 }
             },
             vidas: {
@@ -68,7 +95,7 @@ class Usuario extends Model {
         
     }
 
-    // Método para adicionar uma vida
+    
     async adicionarVida() {
         if (this.vidas < 5) {
             this.vidas += 1;
@@ -76,7 +103,7 @@ class Usuario extends Model {
         }
     }
 
-    // Método para remover uma vida
+
     async removerVida() {
         if (this.vidas > 0) {
             this.vidas -= 1;
@@ -84,10 +111,7 @@ class Usuario extends Model {
         }
     }
 
-    static associate(models) {
-       
-
-    }
+    static associate(models) {}
 }
 
 export { Usuario };

@@ -5,27 +5,26 @@ import { Usuario } from "../models/Usuario.js";
 import { Conquista } from '../models/Conquista.js';
 import { UsuarioConquista } from '../models/UsuarioConquista.js';
 class UsuarioService {
-
     static async findAll() {
         const objs = await Usuario.findAll({ include: { all: true, nested: true } });
         return objs;
     }
+
 
     static async findByPk(req) {
         const { id } = req.params;
         const obj = await Usuario.findByPk(id);
         return obj;
     }
-    //REGISTER
+  
+
     static async create(req) {
         const { nome, email, senha} = req.body;
         const user = await Usuario.findOne({ where: { email: email } });
         if (user){
           return {message: "Email já cadastrado"}
         }
-
         const hashedSenha = await bcrypt.hash(senha, 10);
- 
         const obj = await Usuario.create({ nome, email, senha: hashedSenha });
         if (obj) {
           const crown = fs.readFileSync('src/assets/crown.png');
@@ -41,6 +40,7 @@ class UsuarioService {
         return {message: "Usuário criado com Sucesso!", usuario: await Usuario.findByPk(obj.id, { include: { all: true, nested: true } })}
     }
 
+
     static async update(req) {
         const { id } = req.params;
         const { nome, email, senha } = req.body;
@@ -49,6 +49,8 @@ class UsuarioService {
         Object.assign(obj, { nome, email, senha});
         return await obj.save();
     }
+
+
     static async delete(req) {
         const { id } = req.params;
         const obj = await Usuario.findByPk(id);
@@ -60,7 +62,8 @@ class UsuarioService {
             throw "Não é possível remover, há dependências!";
         }
     }
-    //LOGIN
+    
+    
     static async login(req){
      const { email, senha} = req.body;
      const user = await Usuario.findOne({ where: { email: email } });

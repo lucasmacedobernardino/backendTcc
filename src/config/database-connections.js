@@ -2,113 +2,146 @@ import { Sequelize } from "sequelize";
 import { databaseConfigSQLite } from "./database-config.js";
 import * as fs from 'fs';
 import { Disciplina } from "../models/Disciplina.js";
+import { Categoria } from "../models/Categoria.js";
+import { Conquista } from "../models/Conquista.js";
+import { Prova } from "../models/Prova.js";
 import { Questao } from "../models/Questao.js";
+import { QuestaoErrada } from "../models/QuestaoErrada.js";
 import { Usuario } from "../models/Usuario.js";
 import { UsuarioResposta } from "../models/UsuarioResposta.js"
-import { Conquista } from "../models/Conquista.js";
 import { UsuarioConquista } from "../models/UsuarioConquista.js";
 import bcrypt from 'bcrypt';
 export const sequelize = new Sequelize(databaseConfigSQLite)
 
 
 Disciplina.init(sequelize)
+Categoria.init(sequelize)
+Conquista.init(sequelize)
+Prova.init(sequelize)
 Questao.init(sequelize)
+QuestaoErrada.init(sequelize)
 Usuario.init(sequelize)
 UsuarioResposta.init(sequelize)
-Conquista.init(sequelize)
 UsuarioConquista.init(sequelize)
 
 Disciplina.associate(sequelize.models);
-Questao.associate(sequelize.models);
-UsuarioConquista.associate(sequelize.models)
-Usuario.associate(sequelize.models);
-UsuarioResposta.associate(sequelize.models)
+Categoria.associate(sequelize.models)
 Conquista.associate(sequelize.models)
+Prova.associate(sequelize.models)
+Questao.associate(sequelize.models);
+QuestaoErrada.associate(sequelize.models)
+Usuario.associate(sequelize.models)
+UsuarioConquista.associate(sequelize.models)
+UsuarioResposta.associate(sequelize.models)
 
 databaseInserts();  
 
 function databaseInserts() {
     (async () => {
-        await sequelize.sync();
         await sequelize.sync({ force: true })
-        const disciplina1 = await Disciplina.create({ nome: "Português" });
-        const disciplina2 = await Disciplina.create({ nome: "Matemática" });
-        const disciplina3 = await Disciplina.create({ nome: "História" });
-        const disciplina4 = await Disciplina.create({ nome: "Geografia" });
-        const disciplina5 = await Disciplina.create({ nome: "Ciências" });
-        //QUESTOES DA PROVA 1-2022
+        const portugues = await Disciplina.create({ nome: "Português" });
+        const matematica = await Disciplina.create({ nome: "Matemática" });
+        const historia = await Disciplina.create({ nome: "História" });
+        const geografia = await Disciplina.create({ nome: "Geografia" });
+        const ciencia = await Disciplina.create({ nome: "Ciências" });
+        
+        const interpretacaoTexto = await Categoria.create({nome: "Interpretação de Texto e Análise Semântica", disciplinaId: portugues.id})
+  
+        const prova952023 = await Prova.create({nome: "95/2023"})
+
 
         const crown = "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/crown.png"
         const emerald = "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/emerald.png"
         const diamond = "https://imagenstcclucas.s3.us-east-2.amazonaws.com/assets/diamond.png"
+
+
+
+
+
         const questao1 = await Questao.create({
             enunciado: `
 
-        Dívida com a Terra 
+         Leia o Texto para responder a questão. 
         
-        “Earth Overshoot Day”, o Dia da Sobrecarga da Terra (algo como “dia em que se 
-        ultrapassam os limites da Terra”). A data é determinada a partir da comparação 
-        entre nossas demandas pelo que vem da natureza – para atividades como construção, 
-        manufatura e absorção do lixo e do gás carbônico que liberamos na atmosfera – e o que 
-        a natureza pode realmente repor através das florestas, mananciais, reservas pesqueiras 
-        e terras cultiváveis. O cálculo é feito por um centro de estudos americanos, o Global 
-        Footprint Network.
-        A superexploração de recursos naturais começou em 1970, quando a capacidade total 
-        do planeta para aquele ano se esgotou no fim de dezembro. De lá para cá, o Dia da 
-        Sobrecarga da Terra tem sido assinalado cada vez mais cedo: em 1997 ocorreu no final de 
-        setembro enquanto que, em 2018, se assinalou a 1 de agosto – e previsto para 29 de julho 
-        em 2019. Por outras palavras, atualmente, é exercida uma procura 1,75 vezes superior à 
-        capacidade de regeneração dos ecossistemas, ou seja, anualmente a humanidade usa os 
-        recursos equivalentes de 1,75 planetas Terra. Cada país contribui de maneira diferente 
-        para esses dados, dependendo de seu modo de vida.
-        Em todo o mundo, os danos causados pela sobrecarga são cada vez mais evidentes: 
-        desflorestação, escassez de água doce, erosão do solo, perda de biodiversidade ou 
-        acumulação de dióxido de carbono na atmosfera. Por sua vez, esses danos acentuam e 
-        dão origem a fenômenos, tais como as alterações climáticas, secas severas, incêndios 
-        florestais ou furacões, isso porque os mecanismos naturais do planeta para lidar com toda 
-        essa pressão estão sobrecarregados.
-        “As economias atuais estão gerindo um esquema de pirâmide financeira com o nosso 
-        planeta”, afirma Mathis Wackernagel, CEO e cofundador da Global Footprint Network. 
-        “Estamos usando os recursos futuros da Terra para operar nossas economias no presente. 
-        Como qualquer esquema de pirâmide, isso funciona por algum tempo. Mas, à medida que 
-        as nações, empresas ou famílias se aprofundam cada vez mais em dívidas, acabarão por 
-        entrar em colapso.”
-        No entanto, é possível inverter essa tendência. Se o Dia da Sobrecarga da Terra fosse 
-        adiantado 5 dias todos os anos até 2050, seria possível retornar ao nível em que usávamos 
-        os recursos de um só planeta. Para assinalar o Dia da Sobrecarga da Terra, a Global 
-        Footprint Network sugere alguns passos e estima o seu impacto na alteração no Dia da 
-        Sobrecarga da Terra. Por exemplo: se 50% do consumo de carne fosse substituído por uma 
-        dieta vegetariana, a data poderia mover-se 5 dias; uma redução de 50% da componente do
-        carbono na Pegada Ecológica moveria a data 93 dias.
-        [...]
-        “Na Global Footprint Network acreditamos que o uso excessivo dos ecossistemas 
-        da Terra constitui um dos maiores desafios que a humanidade enfrenta na atualidade, 
-        sendo que as alterações climáticas são uma parte importante desse desafio”, concluiu 
-        Wackernagel. “Transformar as nossas economias para responder a esse desafio não 
-        é uma tarefa fácil. No entanto, da mesma forma que no passado a humanidade usou 
-        criatividade e engenho, poderemos fazê-lo novamente para criar um futuro próspero, 
-        livre de combustíveis fósseis e destruição do planeta.”
-        
-        Atente a estas considerações acerca do texto.
+                E o febrífugo não passa de um antitérmico 
 
-        A. Os recursos naturais da Terra sempre foram extraídos, no entanto o excesso começou a ocorrer a partir de 1970.
-        B. Uma das soluções para se equilibrar o Dia de Sobrecarga da Terra é padronizar o estilo de 
-        vida dos países.
-        C. O desmatamento acelerado de florestas e as atividades pesqueiras são os grandes responsáveis 
-        pelo desequilíbrio do planeta.
-        D. As consequências da superexploração de recursos naturais da Terra atingem principalmente 
-        os países com alto padrão de vida de sua população.
-        E. O estilo de vida atual bem como a economia são os fatores que determinam a progressividade 
-        do Dia de Sobrecarga da Terra.
-        Está CORRETO o que se afirma em
+        O dentista me passou a receita de remédio para ajudar a cicatrizar melhor uma pequena 
+        cirurgia. Parei na primeira farmácia. Aliás, uma grande farmácia, pertencente a uma des
+        sas redes. Farmácia se tornou supermercado. A gente entra, recebe cestinha, procura os 
+        remédios nas gôndolas. E importamos o costume norte-americano de drugstore. Tem de 
+        tudo, de remédios a bolachas, leite em pó, calcinha e sutiãs, refrigerantes. Aguardem: 
+        cachorro-quente! 
+        Pois o bem jovem que me serviu apanhou a receita, olhou, reolhou e perguntou: 
+        — O que está escrito aqui? 
+        — O nome do remédio. 
+        — Sei, mas qual é o remédio? 
+        — Você é quem tem de saber. 
+        — Mas como vou saber, se não entendo a letra? 
+        — Acho que deve ser... Periogard... Isto? Existe um remédio com esse nome? 
+        — Vou ver. 
+        Ele foi. Olhou o que foi possível no P. E voltou. 
+        — Não temos. 
+        — Acabou ou está em falta? 
+        — Está em falta. 
+        Deixei por isso mesmo continuei. Parei na próxima. Também o jovem olhou, reolhou, cochi
+        chou com outro que deu uma vista na receita. 
+        — Não temos. 
+        — Que remédio mesmo é?
+        — É esse que está escrito aí. 
+        — Sei. Mas não entendo letra de médico. 
+        — Nem eu. Por que não escreveu à máquina? 
+        Continuei mais um pouco, mas desisti. E fui para casa, pensando naqueles tempos em que 
+        o farmacêutico lia qualquer letra. E os médicos pareciam fazer de propósito aqueles gar
+        ranchos, para colocar à prova o pobre boticário. Que, por sua vez, não dava o braço a tor
+        cer. Olhava, e sabia o medicamento. Pode ser que muita gente tenha tomado aquilo que o 
+        farmacêutico entendeu e que nem sempre correspondia ao prescrito. Mas, era batata, não 
+        falhava. Em Araraquara, de vez em quando, a professora apanhava a prova de um aluno:
+        
+        — Que letrinha, hein? Vai ser médico? O que pensa? Que o professor é farmacêutico?
+        
+        Eram duas castas bem estabelecidas. Os médicos com as letras ruins e os farmacêuticos que 
+        decifravam tudo, champolions dedicados. Muitas vezes imaginei que houvesse um conluio, 
+        principalmente quando se deixava a receita para aviar. Na calada da noite, o farmacêutico 
+        batendo à porta do médico e pedindo: “Socorro, doutor. Pode me decifrar as receitas de 
+        hoje?”. E lá ficavam os dois, labutando. 
+        
+        Hoje, médicos usam computadores. E as farmácias têm tantos, mas tantos remédios, que é 
+        impossível se guardar o nome de todos. Há pilhas de listas, grossíssimas. Ou o povo anda 
+        muito doente ou o melhor negócio do mundo é montar um laboratório e em seguida uma 
+        farmácia.
+
+        Leia o trecho a seguir e, em seguida, faça o que se pede
+         
+        “A leitura é uma atividade na qual se leva em conta as experiências 
+        e os conhecimentos do leitor; a leitura de um texto exige do leitor 
+        bem mais que o conhecimento do código linguístico (...).”
+
+        Considerando que o sentido do texto é construído na relação entre texto e sujeito, julgue os itens 
+        abaixo como verdadeiros ou falsos em relação à crônica E o febrífugo não passa de um antitérmico. 
+        
+        I) O modelo de farmácia popularmente difundido no Brasil, atualmente, é embasado no padrão 
+        americano, havendo uma diversidade de produtos disponíveis, para além dos medicamentos. 
+        II) No trecho “E os médicos pareciam fazer de propósito aqueles garranchos, para colocar à prova 
+        o pobre boticário.”, pode-se afirmar que o adjetivo “pobre” refere-se à condição econômica do 
+        farmacêutico. 
+        III) Na frase “Mas, era batata, não falhava.”, é possível compreender que o termo “batata” trata-se, 
+        literalmente, do tubérculo, evidenciando o uso de linguagem puramente denotativa. 
+        IV) É perceptível, no período a seguir, “Que letrinha, hein? Vai ser médico? O que pensa? Que o 
+        professor é farmacêutico?”, que a professora está avaliando negativamente a letra do estudante. 
+        V) Entende-se que “castas” significa grupos, classes, na oração: “Eram duas castas bem estabele
+        cidas. Os médicos com as letras ruins e os farmacêuticos que decifravam tudo (...)”. 
+        São verdadeiros os itens:
         `,
-            opcao1: `A, D e E apenas.`,
-            opcao2: `B, C e E apenas.`,
-            opcao3: `C e D apenas.`,
-            opcao4: `A e E apenas.`,
-            opcao5: `A, B e C apenas.`,
+            opcao1: `I, II e III`,
+            opcao2: `I, III e IV`,
+            opcao3: `I, II e IV`,
+            opcao4: `I, IV e V`,
+            opcao5: `I, II e V`,
             respostaCorreta: 'D',
-            disciplinaId: 1,
+            disciplinaId: portugues.id,
+            categoriaId: interpretacaoTexto.id,
+            provaId: prova952023.id,
+            ordem: 1
         });
 
         const questao2 = await Questao.create({

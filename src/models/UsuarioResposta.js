@@ -9,14 +9,6 @@ class UsuarioResposta extends Model {
                     notNull: {msg: "A resposta do usuário não pode ser nula!"},
                     notEmpty: {msg: "A resposta do usuário não pode estar vazia!"}
                 }
-            },
-            dataResposta: {
-                allowNull: false,
-                type: DataTypes.DATE,
-                validate: {
-                    notNull: {msg: "A data da resposta não pode ser nula!"},
-                    notEmpty: {msg: "A data da resposta não pode ser vazia!"}
-                }
             }
         }, { sequelize, modelName: "usuarioResposta", tableName: "usuarioRespostas" });
     }

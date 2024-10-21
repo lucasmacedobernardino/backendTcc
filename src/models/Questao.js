@@ -61,12 +61,52 @@ class Questao extends Model {
             imagem: {
                 type: DataTypes.STRING,
                 allowNull: true,
-            }
+            },
+            foiRespondida: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
+            },
+            ultimaQuestao: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
+            },
+            ordem: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            disciplinaId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'disciplinas',
+                    key: 'id',
+                },
+            },
+            categoriaId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'categorias',
+                    key: 'id',
+                },
+            },
+            provaId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'provas',
+                    key: 'id',
+                },
+            },
             
         }, { sequelize, modelName: "questao", tableName: "questoes" });
     }
     static associate(models) {
         this.belongsTo(models.disciplina, { as: 'disciplina', foreignKey: { name: 'disciplinaId', allowNull: false, validate: { notNull: { msg: 'A questão deve estar associada a alguma disciplina!' } } } });
+        this.belongsTo(models.categoria, { as: 'categoria', foreignKey: { name: 'categoriaId', allowNull: false, validate: { notNull: { msg: 'A questão deve estar associada a alguma categoria!' } } } });
+        this.belongsTo(models.prova, { as: 'prova', foreignKey: { name: 'provaId', allowNull: false, validate: { notNull: { msg: 'A questão deve estar associada a alguma prova!' } } } });
     }
 }
 

@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
-class Disciplina extends Model {
+
+class Prova extends Model {
     static init(sequelize) {
         super.init({
             nome: {
@@ -9,12 +10,18 @@ class Disciplina extends Model {
                     notNull: { msg: "O nome não pode ser nulo!" },
                     notEmpty: { msg: "O nome não pode ser vazio!" }
                 }
-            }
-        }, { sequelize, modelName: "disciplina", tableName: "disciplinas" });
+            },
+            imagem: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            }            
+        }, { sequelize, modelName: "prova", tableName: "provas" });
     }
+
     static associate(models) {
-        this.hasMany(models.categoria, { as: 'categorias', foreignKey: 'categoriaId' });
+        this.hasMany(models.questao, { as: 'questoes', foreignKey: 'provaId' });
     }
+    
 }
 
-export { Disciplina };
+export { Prova };

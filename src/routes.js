@@ -18,8 +18,8 @@ routes.delete('/disciplinas/:id', DisciplinaController.delete);
 
 routes.get('/questoes', QuestaoController.findAll);
 routes.get('/questoes/:id', QuestaoController.findByPk);
-routes.get('/questoes/disciplinas/:id', authMiddleware, QuestaoController.findByDisciplina);
-routes.get('/questoes/disciplinas/aleatorio/:id', authMiddleware, QuestaoController.findSomeQuestion);
+routes.get('/questoes/provas/:userId/:id', authMiddleware, QuestaoController.findByProva);
+routes.get('/questoes/finalizarProva/:id', authMiddleware, QuestaoController.finalizarProva);
 routes.post('/questoes', QuestaoController.create);
 routes.put('/questoes/:id', QuestaoController.update);
 routes.delete('/questoes/:id', QuestaoController.delete);
