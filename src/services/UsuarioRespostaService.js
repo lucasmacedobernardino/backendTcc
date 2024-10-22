@@ -31,7 +31,7 @@ class UsuarioRespostaService {
         questao1.foiRespondida = true
         const usuario1 = await Usuario.findByPk(usuario[0].id);
         if (usuario1.dataValues.vidas > 0) {
-            if (respostaUsuario === questao1.dataValues.respostaCorreta) {
+            if (respostaUsuario.toUpperCase() === questao1.dataValues.respostaCorreta) {
                 const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId)
                 let usuarioIncrementado = null
                 switch (tipoDisciplina.dataValues.nome) {
