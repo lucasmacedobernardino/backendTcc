@@ -23,13 +23,13 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// As rotas são usadas aqui, e o authMiddleware é aplicado dentro de routes.js onde necessário
+
 app.use(routes);
 
-// Middleware para manipulação de erros
+
 app.use(errorHandler);
 
-// Iniciar o servidor
+
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

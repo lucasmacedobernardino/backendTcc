@@ -54,13 +54,18 @@ class Questao extends Model {
                 type: DataTypes.CHAR,
                 allowNull: false,
                 validate: {
-                    notNull: {msg: "A resposta não pode ser nula!"},
-                    notEmpty: {msg: "A resposta não pode estar vazia!"}
+                    notNull: { msg: "A resposta não pode ser nula!" },
+                    notEmpty: { msg: "A resposta não pode estar vazia!" }
                 }
             },
             imagem: {
                 type: DataTypes.STRING,
                 allowNull: true,
+            },
+            marcada: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
             },
             foiRespondida: {
                 type: DataTypes.BOOLEAN,
@@ -100,7 +105,16 @@ class Questao extends Model {
                     key: 'id',
                 },
             },
-            
+            tentativa: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notNull: { msg: "A tentativa não pode ser nulo!" },
+                    notEmpty: { msg: "A tentativa não pode ser vazio!" }
+                },
+                defaultValue: 0
+            },
+
         }, { sequelize, modelName: "questao", tableName: "questoes" });
     }
     static associate(models) {

@@ -23,56 +23,72 @@ class UsuarioRespostaService {
 
     static async create(req) {
         const { respostaUsuario, usuario, questao } = req.body;
+        console.log(respostaUsuario)
+        console.log(usuario)
+        console.log(questao)
         if (!usuario) throw 'Usuário deve ser preenchido!';
         if (!questao) throw 'Questão deve ser preenchida!';
         if (!respostaUsuario) throw 'Resposta do usuário deve ser preenchida!';
 
-        const questao1 = await Questao.findByPk(questao[0].id);
-        questao1.foiRespondida = true
-        const usuario1 = await Usuario.findByPk(usuario[0].id);
+        const questao1 = await Questao.findByPk(questao);
+        const usuario1 = await Usuario.findByPk(usuario);
+
         if (usuario1.dataValues.vidas > 0) {
+            const proximaQuestao = await Questao.findOne({
+                where: {
+                    ordem: questao1.dataValues.ordem + 1
+                }
+            });
+            if (proximaQuestao) {
+                proximaQuestao.marcada = true;
+                await proximaQuestao.save();
+            }
             if (respostaUsuario.toUpperCase() === questao1.dataValues.respostaCorreta) {
-                const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId)
-                let usuarioIncrementado = null
+                const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId);
+                let usuarioIncrementado = null;
                 switch (tipoDisciplina.dataValues.nome) {
                     case "Português":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoPortugues});
-                        break
+                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoPortugues: 10 });
+                        break;
                     case "Matemática":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoMatematica});
+                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoMatematica: 10 });
                         break;
                     case "História":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoHistoria});
+                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoHistoria: 10 });
                         break;
                     case "Geografia":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoGeografia});
+                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoGeografia: 10 });
                         break;
                     case "Ciências":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoCiencia});
-                        break;    
+                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoCiencia: 10 });
+                        break;
                     default:
-                        return null;                
-                }   
+                        return null;
+                }
+
                 const obj = await UR.create({ respostaUsuario, usuarioId: usuarioIncrementado.id, questaoId: questao[0].id });
                 const usuarioAtualizado = await Usuario.findByPk(usuarioIncrementado.dataValues.id);
                 return { usuario: usuarioAtualizado, respostaCorreta: obj, message: "Resposta Correta!" };
             }
-            if (questao1.dataValues.tentativa === 0){
-                await questao1.increment('tentativa', {by: 1})
-                return {message: "Primeira tentativa, porém, Resposta Incorreta!"}
-            }else if(questao1.dataValues.tentativa === 1){
-                await questao1.increment('tentativa', {by: 1})
+
+            if (questao1.dataValues.tentativa === 0) {
+                // Primeira tentativa incorreta
+                await questao1.increment('tentativa', { by: 1 });
+                return { tentativa: 0, message: "Primeira tentativa, porém, Resposta Incorreta!" };
+            } else if (questao1.dataValues.tentativa === 1) {
+                // Segunda tentativa incorreta, decrementa vida e zera tentativa
                 await usuario1.decrement('vidas', { by: 1 });
+                questao1.tentativa = 0;
+                await questao1.save();
+
                 const usuarioAtualizado = await Usuario.findByPk(usuario1.id);
-                return { respostaIncorreta: usuarioAtualizado, message: "Segunda tentativa, Resposta Incorreta!" };
-            }else{
-                questao1.tentativa = 0
+                return { respostaIncorreta: usuarioAtualizado, message: "Segunda tentativa, Resposta Incorreta! Vida perdida." };
             }
         } else {
             return { message: "Você está sem vidas! Por isso não pode responder uma questão." };
         }
-        await questao1.save()
     }
+
 
 
     static async update(req) {

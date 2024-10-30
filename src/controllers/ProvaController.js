@@ -17,7 +17,13 @@ class ProvaController {
 
     static async create(req, res, next) {
         ProvaService.create(req)
-            .then(obj => res.json(obj,201))
+            .then(obj => res.json(obj, 201))
+            .catch(next);
+    }
+
+    static async findQuestaoProvaByOrdem(req, res, next) {
+        ProvaService.findQuestaoProvaByOrdem(req)
+            .then(obj => res.json(obj))
             .catch(next);
     }
 

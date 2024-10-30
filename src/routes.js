@@ -6,6 +6,7 @@ import { UsuarioController } from "./controllers/UsuarioController.js"
 import { UsuarioRespostaController } from "./controllers/UsuarioRespostaController.js"
 import { ConquistaController } from "./controllers/ConquistaController.js";
 import { UsuarioConquistaController } from "./controllers/UsuarioConquistaController.js";
+import { ProvaController } from "./controllers/ProvaController.js";
 
 import authMiddleware from "./_middleware/jwt-verify.js";
 const routes = express.Router();
@@ -15,6 +16,9 @@ routes.get('/disciplinas/:id', DisciplinaController.findByPk);
 routes.post('/disciplinas', DisciplinaController.create);
 routes.put('/disciplinas/:id', DisciplinaController.update);
 routes.delete('/disciplinas/:id', DisciplinaController.delete);
+
+routes.get('/provas/:id', ProvaController.findByPk)
+routes.get('/provas/:provaId/ordem/:ordem', ProvaController.findQuestaoProvaByOrdem)
 
 routes.get('/questoes', QuestaoController.findAll);
 routes.get('/questoes/:id', QuestaoController.findByPk);
@@ -37,7 +41,7 @@ routes.get('/usuarioresposta', UsuarioRespostaController.findAll);
 routes.get('/usuarioresposta/home/:id', UsuarioRespostaController.home);
 routes.get('/usuarioresposta/:id', UsuarioRespostaController.findByPk);
 routes.get('/usuarioresposta/ranking/:periodo', UsuarioRespostaController.ranking);
-routes.post('/usuarioresposta',authMiddleware, UsuarioRespostaController.create);
+routes.post('/usuarioresposta', UsuarioRespostaController.create);
 routes.put('/usuarioresposta/:id', UsuarioRespostaController.update);
 routes.delete('/usuarioresposta/:id', UsuarioRespostaController.delete);
 

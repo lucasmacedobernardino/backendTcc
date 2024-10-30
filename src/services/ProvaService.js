@@ -1,5 +1,5 @@
 import { Prova } from "../models/Prova.js";
-import { Questao } from "../models/Questao.js"; 
+import { Questao } from "../models/Questao.js";
 class ProvaService {
     static async findAll() {
         const objs = await Prova.findAll({ include: { all: true, nested: true } });
@@ -15,14 +15,37 @@ class ProvaService {
     }
 
 
+    static async findQuestaoProvaByOrdem(req) {
+        const { provaId, ordem } = req.params;
+
+        // Busca a prova pelo ID, incluindo as questões
+        const obj = await Prova.findByPk(provaId, {
+            include: { all: true, nested: true }
+        });
+
+        // Verifica se a prova foi encontrada
+        if (!obj) throw new Error('Prova não encontrada!');
+
+        // Verifica se a ordem solicitada é válida
+        if (ordem < 1 || ordem > obj.questoes.length) {
+            throw new Error('Ordem da questão inválida!');
+        }
+
+        // Retorna a questão correspondente à ordem (subtrai 1 para ajustar ao índice)
+        return obj.questoes[ordem - 1];
+    }
+
+
+
+
     static async create(req) {
-        const { nome, questoes } = req.body; 
+        const { nome, questoes } = req.body;
         if (!nome) throw 'O nome da disciplina não pode ser nulo ou vazio!';
         const prova = await Prova.create({
             nome,
-            questoes 
+            questoes
         }, {
-            include: [{ model: Questao, as: 'questoes' }]  
+            include: [{ model: Questao, as: 'questoes' }]
         });
         return await Prova.findByPk(prova.id, { include: { all: true, nested: true } });
     }
@@ -46,7 +69,7 @@ class ProvaService {
 
         try {
             await obj.destroy();
-            return obj; 
+            return obj;
         } catch (error) {
             throw "Não é possível remover, há dependências!";
         }
