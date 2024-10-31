@@ -66,7 +66,7 @@ class UsuarioRespostaService {
                         return null;
                 }
 
-                const obj = await UR.create({ respostaUsuario, usuarioId: usuarioIncrementado.id, questaoId: questao[0].id });
+                const obj = await UR.create({ respostaUsuario, usuarioId: usuarioIncrementado.id, questaoId: questao1.id });
                 const usuarioAtualizado = await Usuario.findByPk(usuarioIncrementado.dataValues.id);
                 return { usuario: usuarioAtualizado, respostaCorreta: obj, message: "Resposta Correta!" };
             }
