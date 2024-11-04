@@ -46,21 +46,27 @@ class UsuarioRespostaService {
             if (respostaUsuario.toUpperCase() === questao1.dataValues.respostaCorreta) {
                 const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId);
                 let usuarioIncrementado = null;
+                let messageCorreta = null;
                 switch (tipoDisciplina.dataValues.nome) {
                     case "Português":
                         usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoPortugues: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Português te deu 10 pontos de experiência!"
                         break;
                     case "Matemática":
                         usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoMatematica: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Matemática te deu 10 pontos de experiência!"
                         break;
                     case "História":
                         usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoHistoria: 10 });
+                        messageCorreta = "Resposta Correta! O mago de História te deu 10 pontos de experiência!"
                         break;
                     case "Geografia":
                         usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoGeografia: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Geografia te deu 10 pontos de experiência!"
                         break;
                     case "Ciências":
                         usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoCiencia: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Ciências te deu 10 pontos de experiência!"
                         break;
                     default:
                         return null;
@@ -68,7 +74,7 @@ class UsuarioRespostaService {
 
                 const obj = await UR.create({ respostaUsuario, usuarioId: usuarioIncrementado.id, questaoId: questao1.id });
                 const usuarioAtualizado = await Usuario.findByPk(usuarioIncrementado.dataValues.id);
-                return { usuario: usuarioAtualizado, respostaCorreta: obj, message: "Resposta Correta!" };
+                return { usuario: usuarioAtualizado, respostaCorreta: obj, message: messageCorreta };
             }
 
             if (questao1.dataValues.tentativa === 0) {
@@ -82,7 +88,7 @@ class UsuarioRespostaService {
                 await questao1.save();
 
                 const usuarioAtualizado = await Usuario.findByPk(usuario1.id);
-                return { respostaIncorreta: usuarioAtualizado, message: "Segunda tentativa, Resposta Incorreta! Vida perdida." };
+                return { respostaIncorreta: usuarioAtualizado, message: "Essa foi sua segunda tentativa, Resposta Incorreta, por isso você perdeu uma vida!" };
             }
         } else {
             return { message: "Você está sem vidas! Por isso não pode responder uma questão." };
@@ -128,7 +134,7 @@ class UsuarioRespostaService {
 
 
     static async rankingPorDisciplina(req) {
-        const { disciplina } = req.params; // Ex: "Portugues", "Matematica", etc.
+        const { disciplina } = req.params;
         return await sequelize.query(`
             SELECT DISTINCT u.nome, u.pontuacao${disciplina}
             FROM usuarios u

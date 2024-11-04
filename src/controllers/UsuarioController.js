@@ -15,7 +15,7 @@ class UsuarioController {
 
     static async create(req, res, next) {
         UsuarioService.create(req)
-            .then(obj => res.json(obj,201))
+            .then(obj => res.json(obj, 201))
             .catch(next);
     }
 
@@ -30,15 +30,21 @@ class UsuarioController {
             .then(obj => res.json(obj))
             .catch(next);
     }
-  
+
     static async login(req, res, next) {
         UsuarioService.login(req)
             .then(obj => res.json(obj))
             .catch(next);
     }
 
-    static async ranking(req, res, next){
-        
+    static async adicionarUmEntradaUsuario(req, res, next) {
+        UsuarioService.adicionarUmEntradaUsuario(req)
+            .then(obj => res.json(obj))
+            .catch(next);
+    }
+
+    static async ranking(req, res, next) {
+
     }
 }
 

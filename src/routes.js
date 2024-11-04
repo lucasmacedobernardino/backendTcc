@@ -33,6 +33,7 @@ routes.get('/usuarios', UsuarioController.findAll);
 routes.get('/usuarios/:id', UsuarioController.findByPk);
 routes.post('/usuarios', UsuarioController.create);
 routes.put('/usuarios/:id', UsuarioController.update);
+routes.put('/usuarios/adicionarUmEntradaUsuario/:id', UsuarioController.adicionarUmEntradaUsuario)
 routes.delete('/usuarios/:id', UsuarioController.delete);
 routes.post('/usuarios/login', UsuarioController.login);
 

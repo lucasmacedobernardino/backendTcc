@@ -90,12 +90,18 @@ class Usuario extends Model {
                     notNull: { msg: "A vida não pode ser nula!" },
                     notEmpty: { msg: "A vida não pode ser vazia!" }
                 }
+            },
+            entrada: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0
             }
+
         }, { sequelize, modelName: "usuario", tableName: "usuarios" });
-        
+
     }
 
-    
+
     async adicionarVida() {
         if (this.vidas < 5) {
             this.vidas += 1;
@@ -111,7 +117,7 @@ class Usuario extends Model {
         }
     }
 
-    static associate(models) {}
+    static associate(models) { }
 }
 
 export { Usuario };

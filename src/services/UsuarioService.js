@@ -64,6 +64,19 @@ class UsuarioService {
   }
 
 
+  static async adicionarUmEntradaUsuario(req) {
+    const { id } = req.params;
+    const obj = await Usuario.findByPk(id);
+    if (obj == null) throw 'Usuário não encontrada!';
+    try {
+      obj.entrada = 1
+      obj.save()
+    } catch (error) {
+      throw "Não é possível remover, adicionar um!";
+    }
+  }
+
+
   static async login(req) {
     const { email, senha } = req.body;
     console.log(senha)
@@ -71,6 +84,7 @@ class UsuarioService {
     if (!user) {
       return { message: "Email não encontrado!" }
     }
+
 
     const senhaCorrespondente = await bcrypt.compare(senha, user.dataValues.senha);
     if (senhaCorrespondente) {
