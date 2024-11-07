@@ -12,8 +12,8 @@ class UsuarioRespostaController {
             .then(obj => res.json(obj))
             .catch(next);
     }
-    static async ranking(req, res, next) {
-        UsuarioRespostaService.ranking(req)
+    static async rankingTotal(req, res, next) {
+        UsuarioRespostaService.rankingTotal(req)
             .then(obj => res.json(obj))
             .catch(next);
     }
@@ -35,11 +35,11 @@ class UsuarioRespostaController {
             .then(obj => res.json(obj))
             .catch(next);
     }
-    static async home(req, res, next){
+    static async home(req, res, next) {
         UsuarioRespostaService.home(req)
             .then(obj => res.json(obj))
             .catch(next);
-    }   
+    }
 }
 
 export { UsuarioRespostaController };

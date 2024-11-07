@@ -4,12 +4,14 @@ import fs from "fs";
 import { Usuario } from "../models/Usuario.js";
 import { Conquista } from '../models/Conquista.js';
 import { UsuarioConquista } from '../models/UsuarioConquista.js';
+import { Questao } from "../models/Questao.js";  // Importando o modelo Questao
+import { UsuarioQuestao } from "../models/UsuarioQuestao.js";  // Importando o modelo UsuarioQuestao
+
 class UsuarioService {
   static async findAll() {
     const objs = await Usuario.findAll({ include: { all: true, nested: true } });
     return objs;
   }
-
 
   static async findByPk(req) {
     const { id } = req.params;
@@ -17,29 +19,66 @@ class UsuarioService {
     return obj;
   }
 
-
   static async create(req) {
     const { nome, email, senha } = req.body;
     const user = await Usuario.findOne({ where: { email: email } });
     if (user) {
-      return { message: "Email já cadastrado" }
+      return { message: "Email já cadastrado" };
     }
     const hashedSenha = await bcrypt.hash(senha, 10);
     const obj = await Usuario.create({ nome, email, senha: hashedSenha });
+
     if (obj) {
+      // Lê as imagens das conquistas
       const crown = fs.readFileSync('src/assets/crown.png');
       const emerald = fs.readFileSync('src/assets/emerald.png');
       const diamond = fs.readFileSync('src/assets/diamond.png');
-      const conquista1 = await Conquista.create({ imagem: crown, nome: "Coroa" })
-      const conquista2 = await Conquista.create({ imagem: emerald, nome: "Esmeralda" })
-      const conquista3 = await Conquista.create({ imagem: diamond, nome: "Diamante" })
-      await UsuarioConquista.create({ usuarioId: obj.dataValues.id, conquistaId: conquista1.dataValues.id })
-      await UsuarioConquista.create({ usuarioId: obj.dataValues.id, conquistaId: conquista2.dataValues.id })
-      await UsuarioConquista.create({ usuarioId: obj.dataValues.id, conquistaId: conquista3.dataValues.id })
-    }
-    return { message: "Usuário criado com Sucesso!", usuario: await Usuario.findByPk(obj.id, { include: { all: true, nested: true } }) }
-  }
 
+      // Cria as conquistas
+      const conquista1 = await Conquista.create({ imagem: crown, nome: "Coroa" });
+      const conquista2 = await Conquista.create({ imagem: emerald, nome: "Esmeralda" });
+      const conquista3 = await Conquista.create({ imagem: diamond, nome: "Diamante" });
+
+      // Associa as conquistas ao usuário
+      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: conquista1.id });
+      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: conquista2.id });
+      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: conquista3.id });
+
+      // Busca todas as questões
+      const questoes = await Questao.findAll({
+        order: [['provaId', 'ASC'], ['ordem', 'ASC']] // Ordena por prova e ordem para garantir que a primeira questão de cada prova esteja no início de cada grupo
+      });
+
+      const associacoes = [];
+      let provaAtualId = null;
+      for (let questao of questoes) {
+        if (questao.provaId !== provaAtualId) {
+          // Primeira questão de uma nova prova
+          associacoes.push({
+            usuarioId: obj.id,
+            questaoId: questao.id,
+            desbloqueada: true // Desbloqueia a primeira questão da nova prova
+          });
+          provaAtualId = questao.provaId;
+        } else {
+          // Questões subsequentes da mesma prova
+          associacoes.push({
+            usuarioId: obj.id,
+            questaoId: questao.id,
+            desbloqueada: false
+          });
+        }
+      }
+      // Cria todas as associações em um único comando
+      await UsuarioQuestao.bulkCreate(associacoes);
+
+    }
+
+    return {
+      message: "Usuário criado com sucesso!",
+      usuario: await Usuario.findByPk(obj.id, { include: { all: true, nested: true } })
+    };
+  }
 
   static async update(req) {
     const { id } = req.params;
@@ -49,7 +88,6 @@ class UsuarioService {
     Object.assign(obj, { nome, email, senha });
     return await obj.save();
   }
-
 
   static async delete(req) {
     const { id } = req.params;
@@ -63,28 +101,24 @@ class UsuarioService {
     }
   }
 
-
   static async adicionarUmEntradaUsuario(req) {
     const { id } = req.params;
     const obj = await Usuario.findByPk(id);
-    if (obj == null) throw 'Usuário não encontrada!';
+    if (obj == null) throw 'Usuário não encontrado!';
     try {
-      obj.entrada = 1
-      obj.save()
+      obj.entrada = 1;
+      obj.save();
     } catch (error) {
-      throw "Não é possível remover, adicionar um!";
+      throw "Não é possível adicionar uma entrada!";
     }
   }
 
-
   static async login(req) {
     const { email, senha } = req.body;
-    console.log(senha)
     const user = await Usuario.findOne({ where: { email: email } });
     if (!user) {
-      return { message: "Email não encontrado!" }
+      return { message: "Email não encontrado!" };
     }
-
 
     const senhaCorrespondente = await bcrypt.compare(senha, user.dataValues.senha);
     if (senhaCorrespondente) {
@@ -100,13 +134,11 @@ class UsuarioService {
         token: token,
         message: "Login efetuado!",
         user: { id: user.id, email: user.email, nome: user.dataValues.nome }
-      }
+      };
     } else {
-      return { message: "Senha incorreta!" }
+      return { message: "Senha incorreta!" };
     }
   }
-
-
 }
 
 export { UsuarioService };

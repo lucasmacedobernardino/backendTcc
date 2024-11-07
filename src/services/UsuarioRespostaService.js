@@ -3,8 +3,8 @@ import { Disciplina } from "../models/Disciplina.js";
 import { UsuarioResposta as UR } from "../models/UsuarioResposta.js";
 import { Usuario } from "../models/Usuario.js";
 import { Sequelize } from "sequelize";
+import { UsuarioQuestao } from "../models/UsuarioQuestao.js";
 import sequelize from "../config/database-connections.js";
-import { UsuarioConquista } from "../models/UsuarioConquista.js";
 
 class UsuarioRespostaService {
     static async findAll() {
@@ -21,79 +21,96 @@ class UsuarioRespostaService {
     }
 
 
+
+
+
+
     static async create(req) {
         const { respostaUsuario, usuario, questao } = req.body;
-        console.log(respostaUsuario)
-        console.log(usuario)
-        console.log(questao)
+
         if (!usuario) throw 'Usuário deve ser preenchido!';
         if (!questao) throw 'Questão deve ser preenchida!';
         if (!respostaUsuario) throw 'Resposta do usuário deve ser preenchida!';
 
         const questao1 = await Questao.findByPk(questao);
         const usuario1 = await Usuario.findByPk(usuario);
-
         if (usuario1.dataValues.vidas > 0) {
             const proximaQuestao = await Questao.findOne({
                 where: {
-                    ordem: questao1.dataValues.ordem + 1
+                    provaId: questao1.dataValues.provaId,
+                    ordem: questao1.dataValues.ordem + 1 // Busca a próxima questão pela ordem
                 }
             });
             if (proximaQuestao) {
-                proximaQuestao.marcada = true;
-                await proximaQuestao.save();
+                // Verifica se a próxima questão já está associada ao usuário
+                let usuarioQuestao = await UsuarioQuestao.findOne({
+                    where: {
+                        usuarioId: usuario1.id,
+                        questaoId: proximaQuestao.id
+                    }
+                });
+
+                // Se não existir, cria uma nova entrada desbloqueada; senão, atualiza o status
+                if (!usuarioQuestao) {
+                    await UsuarioQuestao.create({
+                        usuarioId: usuario1.id,
+                        questaoId: proximaQuestao.id,
+                        desbloqueada: true
+                    });
+                } else if (!usuarioQuestao.desbloqueada) {
+                    usuarioQuestao.desbloqueada = true;
+                    await usuarioQuestao.save();
+                }
             }
             if (respostaUsuario.toUpperCase() === questao1.dataValues.respostaCorreta) {
                 const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId);
-                let usuarioIncrementado = null;
                 let messageCorreta = null;
                 switch (tipoDisciplina.dataValues.nome) {
                     case "Português":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoPortugues: 10 });
-                        messageCorreta = "Resposta Correta! O mago de Português te deu 10 pontos de experiência!"
+                        await usuario1.increment({ pontuacao: 10, pontuacaoPortugues: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Português te deu 10 pontos de experiência!";
                         break;
                     case "Matemática":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoMatematica: 10 });
-                        messageCorreta = "Resposta Correta! O mago de Matemática te deu 10 pontos de experiência!"
+                        await usuario1.increment({ pontuacao: 10, pontuacaoMatematica: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Matemática te deu 10 pontos de experiência!";
                         break;
                     case "História":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoHistoria: 10 });
-                        messageCorreta = "Resposta Correta! O mago de História te deu 10 pontos de experiência!"
+                        await usuario1.increment({ pontuacao: 10, pontuacaoHistoria: 10 });
+                        messageCorreta = "Resposta Correta! O mago de História te deu 10 pontos de experiência!";
                         break;
                     case "Geografia":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoGeografia: 10 });
-                        messageCorreta = "Resposta Correta! O mago de Geografia te deu 10 pontos de experiência!"
+                        await usuario1.increment({ pontuacao: 10, pontuacaoGeografia: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Geografia te deu 10 pontos de experiência!";
                         break;
                     case "Ciências":
-                        usuarioIncrementado = await usuario1.increment({ pontuacao: 10, pontuacaoCiencia: 10 });
-                        messageCorreta = "Resposta Correta! O mago de Ciências te deu 10 pontos de experiência!"
+                        await usuario1.increment({ pontuacao: 10, pontuacaoCiencia: 10 });
+                        messageCorreta = "Resposta Correta! O mago de Ciências te deu 10 pontos de experiência!";
                         break;
                     default:
                         return null;
                 }
 
-                const obj = await UR.create({ respostaUsuario, usuarioId: usuarioIncrementado.id, questaoId: questao1.id });
-                const usuarioAtualizado = await Usuario.findByPk(usuarioIncrementado.dataValues.id);
+                const obj = await UR.create({ respostaUsuario, usuarioId: usuario1.id, questaoId: questao1.id });
+                const usuarioAtualizado = await Usuario.findByPk(usuario1.id);
                 return { usuario: usuarioAtualizado, respostaCorreta: obj, message: messageCorreta };
             }
 
             if (questao1.dataValues.tentativa === 0) {
-                // Primeira tentativa incorreta
                 await questao1.increment('tentativa', { by: 1 });
                 return { tentativa: 0, message: "Primeira tentativa, porém, Resposta Incorreta!" };
             } else if (questao1.dataValues.tentativa === 1) {
-                // Segunda tentativa incorreta, decrementa vida e zera tentativa
                 await usuario1.decrement('vidas', { by: 1 });
                 questao1.tentativa = 0;
                 await questao1.save();
 
                 const usuarioAtualizado = await Usuario.findByPk(usuario1.id);
-                return { respostaIncorreta: usuarioAtualizado, message: "Essa foi sua segunda tentativa, Resposta Incorreta, por isso você perdeu uma vida!" };
+                return { respostaIncorreta: usuarioAtualizado, message: "Segunda tentativa incorreta, perdeu uma vida!" };
             }
         } else {
             return { message: "Você está sem vidas! Por isso não pode responder uma questão." };
         }
     }
+
 
 
 

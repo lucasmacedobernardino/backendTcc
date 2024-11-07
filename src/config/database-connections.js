@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 import { databaseConfigSQLite } from "./database-config.js";
-import * as fs from 'fs';
 import { Disciplina } from "../models/Disciplina.js";
 import { Categoria } from "../models/Categoria.js";
 import { Conquista } from "../models/Conquista.js";
@@ -10,6 +9,8 @@ import { QuestaoErrada } from "../models/QuestaoErrada.js";
 import { Usuario } from "../models/Usuario.js";
 import { UsuarioResposta } from "../models/UsuarioResposta.js"
 import { UsuarioConquista } from "../models/UsuarioConquista.js";
+import { UsuarioQuestao } from "../models/UsuarioQuestao.js";
+import { UsuarioService } from "../services/UsuarioService.js";
 import bcrypt from 'bcrypt';
 export const sequelize = new Sequelize(databaseConfigSQLite)
 
@@ -23,6 +24,7 @@ QuestaoErrada.init(sequelize)
 Usuario.init(sequelize)
 UsuarioResposta.init(sequelize)
 UsuarioConquista.init(sequelize)
+UsuarioQuestao.init(sequelize)
 
 Disciplina.associate(sequelize.models);
 Categoria.associate(sequelize.models)
@@ -33,8 +35,34 @@ QuestaoErrada.associate(sequelize.models)
 Usuario.associate(sequelize.models)
 UsuarioConquista.associate(sequelize.models)
 UsuarioResposta.associate(sequelize.models)
+UsuarioQuestao.associate(sequelize.models)
 
 databaseInserts();
+async function inserirUsuarios() {
+        const senha1 = "Ab123!@#"
+        const senha2 = "123"
+
+        // Usuários com senhas já criptografadas
+        const usuariosData = [
+                { nome: "Lucas", email: "lucasmacedoes@gmail.com", senha: senha1 },
+                { nome: "Raphael", email: "faeldojo@gmail.com", senha: senha2 },
+                { nome: "João", email: "joao@gmail.com", senha: senha2 },
+                { nome: "Jonatas", email: "jonatas@gmail.com", senha: senha2 },
+                { nome: "Lilian", email: "lilian@gmail.com", senha: senha2 },
+        ];
+
+        // Criação dos usuários utilizando o create do UsuarioService
+        for (let usuarioData of usuariosData) {
+                const req = { body: usuarioData }; // Criando o objeto de request
+                try {
+                        const response = await UsuarioService.create(req); // Chamando o método create do UsuarioService
+                        console.log(`Usuário ${usuarioData.nome} criado com sucesso!`, response.usuario);
+                } catch (error) {
+                        console.error(`Erro ao criar o usuário ${usuarioData.nome}:`, error);
+                }
+        }
+}
+
 
 function databaseInserts() {
         (async () => {
@@ -9829,8 +9857,18 @@ function databaseInserts() {
                         ordem: 30,
                         ultimaQuestao: true
                 });
-                const senha1 = await bcrypt.hash("Ab123!@#", 10);
-                const usuario1 = await Usuario.create({ nome: "Lucas", email: "lucasmacedoes@gmail.com", senha: senha1 })
+                inserirUsuarios().then(() => {
+                        console.log("Todos os usuários foram inseridos.");
+                }).catch((err) => {
+                        console.error("Erro ao inserir os usuários:", err);
+                });
+                // const senha1 = await bcrypt.hash("Ab123!@#", 10);
+                // const senha2 = await bcrypt.hash("123", 10);
+                // const usuario1 = await Usuario.create({ nome: "Lucas", email: "lucasmacedoes@gmail.com", senha: senha1 })
+                // const usuario2 = await Usuario.create({ nome: "Raphael", email: "faeldojo@gmail.com", senha: senha2 })
+                // const usuario3 = await Usuario.create({ nome: "João", email: "joao@gmail.com", senha: senha2 })
+                // const usuario4 = await Usuario.create({ nome: "Jonatas", email: "jonatas@gmail.com", senha: senha2 })
+                // const usuario5 = await Usuario.create({ nome: "Lilian", email: "lilian@gmail.com", senha: senha2 })
         })();
 
 }

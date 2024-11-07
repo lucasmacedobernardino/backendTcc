@@ -11,38 +11,38 @@ class QuestaoErrada extends Model {
                     notEmpty: { msg: "O enunciado não pode ser vazio!" }
                 }
             },
-            provaId: { 
+            provaId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'provas', 
-                    key: 'id' 
+                    model: 'provas',
+                    key: 'id'
                 }
             },
-            disciplinaId: { 
+            disciplinaId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'disciplinas', 
-                    key: 'id' 
+                    model: 'disciplinas',
+                    key: 'id'
                 }
             },
-            questaoId: { 
+            questaoId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'questoes', 
-                    key: 'id' 
+                    model: 'questoes',
+                    key: 'id'
                 }
             }
-        }, { 
-            sequelize, 
-            modelName: "questaoErrada", 
+        }, {
+            sequelize,
+            modelName: "questaoErrada",
             tableName: "questoesErradas",
             indexes: [
                 {
                     unique: true,
-                    fields: ['prova_id', 'questao_id', 'disciplina_id']  
+                    fields: ['prova_id', 'questao_id', 'disciplina_id']
                 }
             ]
         });
@@ -52,6 +52,7 @@ class QuestaoErrada extends Model {
         this.belongsTo(models.prova, { as: 'prova', foreignKey: 'prova_id' });
         this.belongsTo(models.questao, { as: 'questao', foreignKey: 'questao_id' });
         this.belongsTo(models.disciplina, { as: 'disciplina', foreignKey: 'disciplina_id' });
+
     }
 }
 

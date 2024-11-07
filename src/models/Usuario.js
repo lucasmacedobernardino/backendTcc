@@ -97,7 +97,9 @@ class Usuario extends Model {
                 defaultValue: 0
             }
 
+
         }, { sequelize, modelName: "usuario", tableName: "usuarios" });
+
 
     }
 
@@ -117,7 +119,9 @@ class Usuario extends Model {
         }
     }
 
-    static associate(models) { }
+    static associate(models) {
+        this.hasMany(models.UsuarioQuestao, { foreignKey: 'usuarioId' });
+    }
 }
 
 export { Usuario };

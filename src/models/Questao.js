@@ -121,6 +121,7 @@ class Questao extends Model {
         this.belongsTo(models.disciplina, { as: 'disciplina', foreignKey: { name: 'disciplinaId', allowNull: false, validate: { notNull: { msg: 'A questão deve estar associada a alguma disciplina!' } } } });
         this.belongsTo(models.categoria, { as: 'categoria', foreignKey: { name: 'categoriaId', allowNull: false, validate: { notNull: { msg: 'A questão deve estar associada a alguma categoria!' } } } });
         this.belongsTo(models.prova, { as: 'prova', foreignKey: { name: 'provaId', allowNull: false, validate: { notNull: { msg: 'A questão deve estar associada a alguma prova!' } } } });
+        this.hasMany(models.UsuarioQuestao, { foreignKey: 'questaoId' });
     }
 }
 

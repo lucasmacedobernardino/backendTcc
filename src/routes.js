@@ -7,7 +7,7 @@ import { UsuarioRespostaController } from "./controllers/UsuarioRespostaControll
 import { ConquistaController } from "./controllers/ConquistaController.js";
 import { UsuarioConquistaController } from "./controllers/UsuarioConquistaController.js";
 import { ProvaController } from "./controllers/ProvaController.js";
-
+import { UsuarioQuestaoController } from './controllers/UsuarioQuestaoController.js';
 import authMiddleware from "./_middleware/jwt-verify.js";
 const routes = express.Router();
 
@@ -40,8 +40,7 @@ routes.post('/usuarios/login', UsuarioController.login);
 
 routes.get('/usuarioresposta', UsuarioRespostaController.findAll);
 routes.get('/usuarioresposta/home/:id', UsuarioRespostaController.home);
-routes.get('/usuarioresposta/:id', UsuarioRespostaController.findByPk);
-routes.get('/usuarioresposta/ranking/:periodo', UsuarioRespostaController.ranking);
+routes.get('/usuarioresposta/rankingTotal/', UsuarioRespostaController.rankingTotal);
 routes.post('/usuarioresposta', UsuarioRespostaController.create);
 routes.put('/usuarioresposta/:id', UsuarioRespostaController.update);
 routes.delete('/usuarioresposta/:id', UsuarioRespostaController.delete);
@@ -58,4 +57,7 @@ routes.get('/usuarioconquista/quantidade/:id', UsuarioConquistaController.getQua
 routes.post('/usuarioconquista', UsuarioConquistaController.create);
 routes.delete('/usuarioconquista/:id', UsuarioConquistaController.delete);
 routes.put('/usuarioconquista/:id', UsuarioConquistaController.update);
+
+routes.get('/usuarios/:usuarioId/provas/:provaId/questoes', authMiddleware, UsuarioQuestaoController.getQuestoesPorUsuario);
+
 export default routes;
