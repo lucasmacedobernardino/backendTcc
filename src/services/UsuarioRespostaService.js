@@ -60,7 +60,8 @@ class UsuarioRespostaService {
                 }
             }
             console.log(respostaUsuario)
-            if (respostaUsuario === questao1.dataValues.respostaCorreta) {
+            const respostaQuestao = questao1.dataValues.respostaCorreta.trim()
+            if (respostaUsuario === respostaQuestao) {
                 console.log('TÁ CERTO PORRA')
                 const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId);
                 let messageCorreta = null;

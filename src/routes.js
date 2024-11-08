@@ -67,6 +67,7 @@ routes.put('/usuarioconquista/:id', UsuarioConquistaController.update);
 
 routes.get('/usuarios/:usuarioId/provas/:provaId/questoes', authMiddleware, UsuarioQuestaoController.getQuestoesPorUsuario);
 
+
 routes.get('/questaoErrada/:usuarioId', QuestaoErradaController.findDistinctByUsuario);
 
 

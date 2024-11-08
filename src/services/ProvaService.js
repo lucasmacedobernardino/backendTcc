@@ -17,23 +17,32 @@ class ProvaService {
 
     static async findQuestaoProvaByOrdem(req) {
         const { provaId, ordem } = req.params;
+        const provaIntId = parseInt(provaId);
+        const ordemInt = parseInt(ordem);
 
-        // Busca a prova pelo ID, incluindo as questões
-        const obj = await Prova.findByPk(provaId, {
-            include: { all: true, nested: true }
-        });
-
-        // Verifica se a prova foi encontrada
-        if (!obj) throw new Error('Prova não encontrada!');
-
-        // Verifica se a ordem solicitada é válida
-        if (ordem < 1 || ordem > obj.questoes.length) {
-            throw new Error('Ordem da questão inválida!');
+        if (isNaN(provaIntId) || isNaN(ordemInt)) {
+            throw new Error('Parâmetros inválidos! A provaId e ordem devem ser números.');
         }
 
-        // Retorna a questão correspondente à ordem (subtrai 1 para ajustar ao índice)
-        return obj.questoes[ordem - 1];
+        console.log(provaIntId, ordemInt);
+
+        // Busca apenas a questão específica dentro da prova, sem trazer todas as associações
+        const questao = await Questao.findOne({
+            where: {
+                provaId: provaIntId,
+                ordem: ordemInt
+            }
+        });
+
+        // Verifica se a questão foi encontrada
+        if (!questao) {
+            throw new Error('Questão não encontrada para essa ordem!');
+        }
+
+        return questao;
     }
+
+
 
 
 

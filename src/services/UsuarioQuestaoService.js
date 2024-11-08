@@ -25,6 +25,33 @@ class UsuarioQuestaoService {
         }
     }
 
+    static async getQuestaoPorUsuario(req) {
+        const { usuarioId, provaId, questaoId } = req.params;
+
+        try {
+            // Busca uma questão específica de uma prova para o usuário, incluindo o status de desbloqueio
+            const questao = await Questao.findOne({
+                where: {
+                    id: questaoId, // Filtra pela questão específica
+                    provaId // Filtra pela prova especificada
+                },
+                include: [{
+                    model: UsuarioQuestao,
+                    as: 'UsuarioQuestaos', // Alias definido na associação
+                    where: { usuarioId }, // Filtra pelo usuário específico
+                    required: true, // Garante que só retorne questão associada ao usuário
+                    attributes: ['desbloqueada', 'questaoId', 'usuarioId'], // Campos que você quer retornar da tabela UsuarioQuestao
+                }],
+            });
+
+            return questao;
+        } catch (error) {
+            console.error("Erro ao buscar a questão para o usuário:", error);
+            throw new Error("Erro ao buscar a questão para o usuário: " + error.message);
+        }
+    }
+
+
 }
 
 export { UsuarioQuestaoService };
