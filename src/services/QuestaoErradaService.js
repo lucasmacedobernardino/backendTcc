@@ -1,10 +1,13 @@
 import { QuestaoErrada } from "../models/QuestaoErrada.js";
-
+import { Prova } from "../models/Prova.js";
+import { Disciplina } from "../models/Disciplina.js";
+import { Questao } from "../models/Questao.js";
+import { Categoria } from "../models/Categoria.js";
 class QuestaoErradaService {
     static async create(req) {
-        const { enunciado, provaId, disciplinaId, questaoId } = req.body;
-        if (!enunciado || !provaId || !disciplinaId || !questaoId) {
-            throw 'Os campos enunciado, provaId, disciplinaId e questaoId são obrigatórios!';
+        const { provaId, disciplinaId, questaoId } = req.body;
+        if (!provaId || !disciplinaId || !questaoId) {
+            throw 'Os campos , provaId, disciplinaId e questaoId são obrigatórios!';
         }
         const existente = await QuestaoErrada.findOne({
             where: { provaId, questaoId }
@@ -13,7 +16,6 @@ class QuestaoErradaService {
             throw 'Essa questão já foi registrada como errada para esta prova!';
         }
         const questaoErrada = await QuestaoErrada.create({
-            enunciado,
             provaId,
             disciplinaId,
             questaoId
@@ -37,22 +39,26 @@ class QuestaoErradaService {
 
     static async findDistinctByUsuario(req) {
         const { usuarioId } = req.params;
+        try {
+            const questoesErradas = await QuestaoErrada.findAll({
+                where: { usuarioId },  // Filtra as questoes erradas pelo usuario
+                include: [
+                    { model: Prova, as: 'prova', attributes: ['id'] },  // Inclui a tabela Prova com id e nome
+                    { model: Disciplina, as: 'disciplina', attributes: ['nome'] },  // Inclui a tabela Disciplina com id e nome
+                    { model: Questao, as: 'questao', attributes: ['ordem'] },  // Inclui a tabela Questao com id e titulo
+                    { model: Categoria, as: 'categoria', attributes: ['nome'] }
+                ],
+                attributes: ['provaId', 'questaoId', 'disciplinaId', 'categoriaId'],  // Seleciona os campos específicos da tabela QuestaoErrada
+            });
 
-        const questoesErradas = await QuestaoErrada.findAll({
-            include: [
-                { model: Prova, as: 'prova', where: { usuarioId } },  
-                { model: Disciplina, as: 'disciplina' },
-                { model: Questao, as: 'questao' }
-            ],
-            attributes: [
-                'questaoId', 
-                [sequelize.fn('DISTINCT', sequelize.col('questaoId')), 'questaoId']
-            ]
-        });
-        if (questoesErradas.length === 0) {
-            throw 'Nenhuma questão errada encontrada para este usuário!';
+            if (questoesErradas.length === 0) {
+                throw 'Nenhuma questão errada encontrada para este usuário!';
+            }
+            return questoesErradas;
+        } catch (err) {
+            console.log(err)
         }
-        return questoesErradas;
+
     }
 }
 

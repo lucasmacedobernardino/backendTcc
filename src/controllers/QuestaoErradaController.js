@@ -15,22 +15,16 @@ class QuestaoErradaController {
     }
 
 
-    static async findByProva(req, res, next) {
-        QuestaoErradaService.findByDisciplina(req)
+    static async findDistinctByUsuario(req, res, next) {
+        QuestaoErradaService.findDistinctByUsuario(req)
             .then(obj => res.json(obj))
             .catch(next);
     }
 
-
-    static async finalizarProva(req, res, next){
-        QuestaoErradaService.finalizarProva(req)
-            .then(obj => res.json(obj))
-            .catch(next);
-    }
 
     static async create(req, res, next) {
         QuestaoErradaService.create(req)
-            .then(obj => res.json(obj,201))
+            .then(obj => res.json(obj, 201))
             .catch(next);
     }
 

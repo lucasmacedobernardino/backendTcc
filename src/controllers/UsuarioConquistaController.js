@@ -6,7 +6,7 @@ class UsuarioConquistaController {
             .then(objs => res.json(objs))
             .catch(next);
     }
-    static async getQuantidadeConquistasPorUsuario(req, res, next){
+    static async getQuantidadeConquistasPorUsuario(req, res, next) {
         UsuarioConquistaService.getQuantidadeConquistasPorUsuario(req)
             .then(obj => res.json(obj))
             .catch(next);
@@ -17,9 +17,15 @@ class UsuarioConquistaController {
             .catch(next);
     }
 
+    static async findByUser(req, res, next) {
+        UsuarioConquistaService.findByUser(req)
+            .then(obj => res.json(obj))
+            .catch(next);
+    }
+
     static async create(req, res, next) {
         UsuarioConquistaService.create(req)
-            .then(obj => res.json(obj,201))
+            .then(obj => res.json(obj, 201))
             .catch(next);
     }
 
@@ -33,7 +39,7 @@ class UsuarioConquistaController {
         UsuarioConquistaService.delete(req)
             .then(obj => res.json(obj))
             .catch(next);
-    } 
+    }
 }
 
 export { UsuarioConquistaController };

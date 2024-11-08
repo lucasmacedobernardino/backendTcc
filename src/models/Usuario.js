@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-
+import Sequelize from "sequelize";
 class Usuario extends Model {
     static init(sequelize) {
         super.init({
@@ -87,6 +87,7 @@ class Usuario extends Model {
                 allowNull: false,
                 defaultValue: 5,
                 validate: {
+                    max: 5,
                     notNull: { msg: "A vida não pode ser nula!" },
                     notEmpty: { msg: "A vida não pode ser vazia!" }
                 }
@@ -103,25 +104,30 @@ class Usuario extends Model {
 
     }
 
-
-    async adicionarVida() {
-        if (this.vidas < 5) {
-            this.vidas += 1;
-            await this.save();
-        }
-    }
-
-
-    async removerVida() {
-        if (this.vidas > 0) {
-            this.vidas -= 1;
-            await this.save();
-        }
-    }
-
     static associate(models) {
         this.hasMany(models.UsuarioQuestao, { foreignKey: 'usuarioId' });
+        this.hasMany(models.questaoErrada, { foreignKey: 'usuarioId' });
     }
 }
 
+function iniciarAdicionarVidasPeriodicamente() {
+    // Executa a função a cada 5 minutos (300.000 milissegundos)
+    setInterval(async () => {
+        try {
+            const usuarios = await Usuario.findAll({
+                where: {
+                    vidas: { [Sequelize.Op.lt]: 5 } // Usuários com menos de 5 vidas
+                }
+            });
+
+            for (const usuario of usuarios) {
+                await usuario.adicionarVida();
+                console.log(`Vida adicionada para o usuário: ${usuario.nome}`);
+            }
+        } catch (error) {
+            console.error("Erro ao adicionar vidas:", error);
+        }
+    }, 50000);
+}
+iniciarAdicionarVidasPeriodicamente();
 export { Usuario };

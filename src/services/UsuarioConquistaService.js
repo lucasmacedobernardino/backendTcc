@@ -18,6 +18,20 @@ class UsuarioConquistaService {
     }
 
 
+    static async findByUser(req) {
+        const { id } = req.params;
+        return await sequelize.query(`
+            SELECT uc.conquista_id, uc.quantidade
+            FROM usuario_conquistas uc
+            WHERE uc.usuario_id = :id
+        `, {
+            replacements: { id },
+            type: sequelize.QueryTypes.SELECT
+        });
+
+    }
+
+
     static async getQuantidadeConquistasPorUsuario(req) {
         const { id } = req.params;
         const [results] = await sequelize.query(`
@@ -25,10 +39,11 @@ class UsuarioConquistaService {
             FROM usuario_conquistas
             WHERE usuario_id = :usuarioId
             GROUP BY conquista_id;`, {
-                replacements: { usuarioId: id }
-            });
+            replacements: { usuarioId: id }
+        });
         return results;
     }
+
 
 
     static async create(req) {
@@ -73,7 +88,7 @@ class UsuarioConquistaService {
         if (obj == null) throw 'Registro de Conquista do usuário não encontrado!';
         try {
             await obj.destroy();
-            return obj; 
+            return obj;
         } catch (error) {
             throw "Não é possível remover, há dependências!";
         }

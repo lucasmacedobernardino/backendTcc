@@ -29,20 +29,12 @@ class UsuarioService {
     const obj = await Usuario.create({ nome, email, senha: hashedSenha });
 
     if (obj) {
-      // Lê as imagens das conquistas
-      const crown = fs.readFileSync('src/assets/crown.png');
-      const emerald = fs.readFileSync('src/assets/emerald.png');
-      const diamond = fs.readFileSync('src/assets/diamond.png');
 
-      // Cria as conquistas
-      const conquista1 = await Conquista.create({ imagem: crown, nome: "Coroa" });
-      const conquista2 = await Conquista.create({ imagem: emerald, nome: "Esmeralda" });
-      const conquista3 = await Conquista.create({ imagem: diamond, nome: "Diamante" });
 
       // Associa as conquistas ao usuário
-      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: conquista1.id });
-      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: conquista2.id });
-      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: conquista3.id });
+      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: 1 });
+      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: 2 });
+      await UsuarioConquista.create({ usuarioId: obj.id, conquistaId: 3 });
 
       // Busca todas as questões
       const questoes = await Questao.findAll({

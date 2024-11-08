@@ -11,7 +11,7 @@ import { UsuarioResposta } from "../models/UsuarioResposta.js"
 import { UsuarioConquista } from "../models/UsuarioConquista.js";
 import { UsuarioQuestao } from "../models/UsuarioQuestao.js";
 import { UsuarioService } from "../services/UsuarioService.js";
-import bcrypt from 'bcrypt';
+import fs from "fs";
 export const sequelize = new Sequelize(databaseConfigSQLite)
 
 
@@ -39,10 +39,15 @@ UsuarioQuestao.associate(sequelize.models)
 
 databaseInserts();
 async function inserirUsuarios() {
+        const crown = fs.readFileSync('src/assets/crown.png');
+        const emerald = fs.readFileSync('src/assets/emerald.png');
+        const diamond = fs.readFileSync('src/assets/diamond.png');
+        await Conquista.create({ imagem: crown, nome: "Coroa" });
+        await Conquista.create({ imagem: emerald, nome: "Esmeralda" });
+        await Conquista.create({ imagem: diamond, nome: "Diamante" });
         const senha1 = "Ab123!@#"
         const senha2 = "123"
 
-        // Usuários com senhas já criptografadas
         const usuariosData = [
                 { nome: "Lucas", email: "lucasmacedoes@gmail.com", senha: senha1 },
                 { nome: "Raphael", email: "faeldojo@gmail.com", senha: senha2 },
@@ -9857,11 +9862,16 @@ function databaseInserts() {
                         ordem: 30,
                         ultimaQuestao: true
                 });
+
+
+
+
                 inserirUsuarios().then(() => {
                         console.log("Todos os usuários foram inseridos.");
                 }).catch((err) => {
                         console.error("Erro ao inserir os usuários:", err);
                 });
+
                 // const senha1 = await bcrypt.hash("Ab123!@#", 10);
                 // const senha2 = await bcrypt.hash("123", 10);
                 // const usuario1 = await Usuario.create({ nome: "Lucas", email: "lucasmacedoes@gmail.com", senha: senha1 })

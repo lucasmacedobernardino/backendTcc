@@ -1,8 +1,8 @@
 import { Questao } from "../models/Questao.js";
+import { QuestaoErrada } from "../models/QuestaoErrada.js";
 import { Disciplina } from "../models/Disciplina.js";
 import { UsuarioResposta as UR } from "../models/UsuarioResposta.js";
 import { Usuario } from "../models/Usuario.js";
-import { Sequelize } from "sequelize";
 import { UsuarioQuestao } from "../models/UsuarioQuestao.js";
 import sequelize from "../config/database-connections.js";
 
@@ -19,10 +19,6 @@ class UsuarioRespostaService {
         if (!obj) throw 'Resposta de usuário não encontrada!';
         return obj;
     }
-
-
-
-
 
 
     static async create(req) {
@@ -93,6 +89,34 @@ class UsuarioRespostaService {
                 const obj = await UR.create({ respostaUsuario, usuarioId: usuario1.id, questaoId: questao1.id });
                 const usuarioAtualizado = await Usuario.findByPk(usuario1.id);
                 return { usuario: usuarioAtualizado, respostaCorreta: obj, message: messageCorreta };
+            } else {
+                const questaoUsuario = questao1;
+                console.log(questaoUsuario.dataValues);
+
+                const questaoErradaExistente = await QuestaoErrada.findOne({
+                    where: {
+                        questaoId: questao1.dataValues.id,
+                        disciplinaId: questao1.dataValues.disciplinaId,
+                        provaId: questao1.dataValues.provaId,
+                        usuarioId: usuario1.dataValues.id,
+                        categoriaId: questao1.dataValues.provaId
+                    }
+                });
+
+                if (!questaoErradaExistente) {
+                    // Se não encontrar, cria a nova QuestaoErrada
+                    const obj = await QuestaoErrada.create({
+                        questaoId: questao1.dataValues.id,
+                        disciplinaId: questao1.dataValues.disciplinaId,
+                        provaId: questao1.dataValues.provaId,
+                        usuarioId: usuario1.dataValues.id,
+                        categoriaId: questao1.dataValues.provaId
+                    });
+                    console.log('Nova QuestaoErrada criada:', obj);
+                } else {
+                    console.log('QuestaoErrada já existe para este usuário');
+                }
+
             }
 
             if (questao1.dataValues.tentativa === 0) {
@@ -142,7 +166,7 @@ class UsuarioRespostaService {
 
     static async rankingTotal(req) {
         return await sequelize.query(`
-            SELECT DISTINCT u.nome, u.pontuacao
+            SELECT DISTINCT u.id, u.nome, u.pontuacao
             FROM usuarios u
             ORDER BY u.pontuacao DESC;`,
             { type: sequelize.QueryTypes.SELECT }
@@ -150,32 +174,88 @@ class UsuarioRespostaService {
     }
 
 
-    static async rankingPorDisciplina(req) {
-        const { disciplina } = req.params;
+    static async rankingPortugues() {
+        try {
+            const rankingPortugues = await sequelize.query(
+                `
+                SELECT u.nome, u.pontuacao_portugues AS pontuacao
+                FROM usuarios u
+                ORDER BY u.pontuacao_portugues DESC;
+                `,
+                { type: sequelize.QueryTypes.SELECT }
+            );
+            return rankingPortugues;
+        } catch (err) {
+            console.error("Erro ao buscar ranking de português:", err);
+            throw err;
+        }
+    }
+
+
+    static async rankingMatematica(req) {
         return await sequelize.query(`
-            SELECT DISTINCT u.nome, u.pontuacao${disciplina}
+            SELECT DISTINCT u.nome, u.pontuacao_matematica AS pontuacao
             FROM usuarios u
-            ORDER BY u.pontuacao${disciplina} DESC;`,
+            ORDER BY u.pontuacao_matematica DESC;`,
+            { type: sequelize.QueryTypes.SELECT }
+        );
+    }
+
+    static async rankingHistoria(req) {
+        return await sequelize.query(`
+            SELECT DISTINCT u.nome, u.pontuacao_historia AS pontuacao
+            FROM usuarios u
+            ORDER BY u.pontuacao_historia DESC;`,
+            { type: sequelize.QueryTypes.SELECT }
+        );
+    }
+
+    static async rankingGeografia(req) {
+        return await sequelize.query(`
+            SELECT DISTINCT u.nome, u.pontuacao_geografia AS pontuacao
+            FROM usuarios u
+            ORDER BY u.pontuacao_geografia DESC;`,
+            { type: sequelize.QueryTypes.SELECT }
+        );
+    }
+
+    static async rankingCiencia(req) {
+        return await sequelize.query(`
+            SELECT DISTINCT u.nome, u.pontuacao_ciencia AS pontuacao
+            FROM usuarios u
+            ORDER BY u.pontuacao_ciencia DESC;`,
             { type: sequelize.QueryTypes.SELECT }
         );
     }
 
 
-    static async adicionarVidasProgramada() {
-        try {
-            const usuarios = await Usuario.findAll({
-                where: {
-                    vidas: { [Sequelize.Op.lt]: 5 } // Usuários com menos de 5 vidas
-                }
-            });
+}
 
-            for (const usuario of usuarios) {
-                await usuario.adicionarVida();
-                console.log(`Vida adicionada para o usuário: ${usuario.nome}`);
-            }
-        } catch (error) {
-            console.error("Erro ao adicionar vidas:", error);
+setInterval(async () => {
+    const ranking = await UsuarioRespostaService.rankingTotal();
+
+    // Assegure-se de que o ranking esteja classificado por pontuação (do maior para o menor)
+    ranking.sort((a, b) => b.pontuacao - a.pontuacao);
+
+    // Atribui as conquistas para o top 3
+    for (let i = 0; i < 3; i++) {
+        const usuario = ranking[i];
+        if (usuario.pontuacao > 0) {
+            await sequelize.query(`
+                UPDATE usuario_conquistas
+                SET quantidade = quantidade + 1
+                WHERE conquista_id = :conquistaId
+                AND usuario_id = :usuarioId
+            `, {
+                replacements: {
+                    conquistaId: i + 1,  // Atribui conquista 1 para o primeiro, 2 para o segundo e 3 para o terceiro
+                    usuarioId: usuario.id
+                },
+                type: sequelize.QueryTypes.UPDATE
+            });
         }
     }
-}
+}, 50000);
+
 export { UsuarioRespostaService };
+

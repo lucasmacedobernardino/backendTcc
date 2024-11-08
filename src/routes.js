@@ -1,5 +1,6 @@
 import express from "express";
 
+import { QuestaoErradaController } from "./controllers/QuestaoErradaController.js";
 import { DisciplinaController } from './controllers/DisciplinaController.js';
 import { QuestaoController } from "./controllers/QuestaoController.js";
 import { UsuarioController } from "./controllers/UsuarioController.js"
@@ -41,6 +42,11 @@ routes.post('/usuarios/login', UsuarioController.login);
 routes.get('/usuarioresposta', UsuarioRespostaController.findAll);
 routes.get('/usuarioresposta/home/:id', UsuarioRespostaController.home);
 routes.get('/usuarioresposta/rankingTotal/', UsuarioRespostaController.rankingTotal);
+routes.get('/usuarioresposta/rankingPortugues/', UsuarioRespostaController.rankingPortugues);
+routes.get('/usuarioresposta/rankingMatematica/', UsuarioRespostaController.rankingMatematica);
+routes.get('/usuarioresposta/rankingHistoria/', UsuarioRespostaController.rankingHistoria);
+routes.get('/usuarioresposta/rankingGeografia/', UsuarioRespostaController.rankingGeografia);
+routes.get('/usuarioresposta/rankingCiencia/', UsuarioRespostaController.rankingCiencia);
 routes.post('/usuarioresposta', UsuarioRespostaController.create);
 routes.put('/usuarioresposta/:id', UsuarioRespostaController.update);
 routes.delete('/usuarioresposta/:id', UsuarioRespostaController.delete);
@@ -52,12 +58,16 @@ routes.delete('/conquista/:id', ConquistaController.delete);
 routes.put('/conquista/:id', ConquistaController.update);
 
 routes.get('/usuarioconquista', UsuarioConquistaController.findAll);
-routes.get('/usuarioconquista/:id', UsuarioConquistaController.findByPk);
+routes.get('/usuarioconquista/:id', UsuarioConquistaController.findByUser);
+
 routes.get('/usuarioconquista/quantidade/:id', UsuarioConquistaController.getQuantidadeConquistasPorUsuario)
 routes.post('/usuarioconquista', UsuarioConquistaController.create);
 routes.delete('/usuarioconquista/:id', UsuarioConquistaController.delete);
 routes.put('/usuarioconquista/:id', UsuarioConquistaController.update);
 
 routes.get('/usuarios/:usuarioId/provas/:provaId/questoes', authMiddleware, UsuarioQuestaoController.getQuestoesPorUsuario);
+
+routes.get('/questaoErrada/:usuarioId', QuestaoErradaController.findDistinctByUsuario);
+
 
 export default routes;
