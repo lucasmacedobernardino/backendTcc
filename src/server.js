@@ -1,36 +1,33 @@
 import dotenv from 'dotenv';
-import express from "express";
-import routes from "./routes.js"; // Assume que as rotas já tenham o authMiddleware onde necessário
+import express from 'express';
+import cors from 'cors';
+import routes from './routes.js'; // Assume que as rotas já tenham o authMiddleware onde necessário
 import errorHandler from '../src/_middleware/error-handler.js';
 
+// Carrega variáveis de ambiente do .env
 dotenv.config();
+
 const app = express();
 
-// Configurações de CORS simplificadas
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers,Authorization');
-    res.setHeader('Access-Control-Max-Age', '86400');
-    res.setHeader('Content-Type', "application/json")
+// Configurações de CORS usando biblioteca
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['X-Requested-With', 'Content-Type', 'Authorization', 'Accept', 'Origin'],
+    maxAge: 86400,
+}));
 
-    if (req.method === 'OPTIONS') {
-        res.sendStatus(204);
-    } else {
-        next();
-    }
-});
-
+// Configuração para JSON
 app.use(express.json());
 
-
+// Carregar rotas
 app.use(routes);
 
-
+// Middleware de tratamento de erros
 app.use(errorHandler);
 
-
+// Inicia o servidor
 const PORT = process.env.PORT || 3333;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
