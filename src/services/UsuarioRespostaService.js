@@ -59,7 +59,8 @@ class UsuarioRespostaService {
                     await usuarioQuestao.save();
                 }
             }
-            if (respostaUsuario.toUpperCase() === questao1.dataValues.respostaCorreta) {
+            console.log(respostaUsuario)
+            if (respostaUsuario === questao1.dataValues.respostaCorreta) {
                 console.log('TÁ CERTO PORRA')
                 const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId);
                 let messageCorreta = null;
