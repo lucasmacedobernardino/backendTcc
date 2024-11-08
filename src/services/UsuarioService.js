@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import fs from "fs";
 import { Usuario } from "../models/Usuario.js";
-import { Conquista } from '../models/Conquista.js';
 import { UsuarioConquista } from '../models/UsuarioConquista.js';
 import { Questao } from "../models/Questao.js";  // Importando o modelo Questao
 import { UsuarioQuestao } from "../models/UsuarioQuestao.js";  // Importando o modelo UsuarioQuestao

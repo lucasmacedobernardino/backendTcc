@@ -37,6 +37,7 @@ class UsuarioRespostaService {
                     ordem: questao1.dataValues.ordem + 1 // Busca a próxima questão pela ordem
                 }
             });
+            console.log(proximaQuestao)
             if (proximaQuestao) {
                 // Verifica se a próxima questão já está associada ao usuário
                 let usuarioQuestao = await UsuarioQuestao.findOne({
@@ -45,7 +46,7 @@ class UsuarioRespostaService {
                         questaoId: proximaQuestao.id
                     }
                 });
-
+                console.log(usuarioQuestao)
                 // Se não existir, cria uma nova entrada desbloqueada; senão, atualiza o status
                 if (!usuarioQuestao) {
                     await UsuarioQuestao.create({
@@ -59,6 +60,7 @@ class UsuarioRespostaService {
                 }
             }
             if (respostaUsuario.toUpperCase() === questao1.dataValues.respostaCorreta) {
+                console.log('TÁ CERTO PORRA')
                 const tipoDisciplina = await Disciplina.findByPk(questao1.dataValues.disciplinaId);
                 let messageCorreta = null;
                 switch (tipoDisciplina.dataValues.nome) {
@@ -99,7 +101,7 @@ class UsuarioRespostaService {
                         disciplinaId: questao1.dataValues.disciplinaId,
                         provaId: questao1.dataValues.provaId,
                         usuarioId: usuario1.dataValues.id,
-                        categoriaId: questao1.dataValues.provaId
+                        categoriaId: questao1.dataValues.categoriaId
                     }
                 });
 
@@ -110,7 +112,7 @@ class UsuarioRespostaService {
                         disciplinaId: questao1.dataValues.disciplinaId,
                         provaId: questao1.dataValues.provaId,
                         usuarioId: usuario1.dataValues.id,
-                        categoriaId: questao1.dataValues.provaId
+                        categoriaId: questao1.dataValues.categoriaId
                     });
                     console.log('Nova QuestaoErrada criada:', obj);
                 } else {
