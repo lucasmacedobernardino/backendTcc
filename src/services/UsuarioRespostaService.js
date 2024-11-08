@@ -240,7 +240,7 @@ setInterval(async () => {
     // Atribui as conquistas para o top 3
     for (let i = 0; i < 3; i++) {
         const usuario = ranking[i];
-        if (usuario.pontuacao > 0) {
+        if (usuario && usuario.pontuacao > 0) {
             await sequelize.query(`
                 UPDATE usuario_conquistas
                 SET quantidade = quantidade + 1
@@ -255,7 +255,7 @@ setInterval(async () => {
             });
         }
     }
-}, 50000);
+}, 600000);
 
 export { UsuarioRespostaService };
 

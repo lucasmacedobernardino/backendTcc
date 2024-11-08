@@ -12,16 +12,16 @@ class Conquista extends Model {
                 }
             },
             imagem: {
-                type: DataTypes.STRING,
+                type: DataTypes.BLOB('long'),
                 allowNull: true,
-            }            
+            }
         }, { sequelize, modelName: "conquista", tableName: "conquistas" });
     }
 
     static associate(models) {
-       
+
     }
-    
+
 }
 
 export { Conquista };
