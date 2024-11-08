@@ -37,7 +37,7 @@ UsuarioConquista.associate(sequelize.models)
 UsuarioResposta.associate(sequelize.models)
 UsuarioQuestao.associate(sequelize.models)
 
-//databaseInserts();
+databaseInserts();
 async function inserirUsuarios() {
         const crown = fs.readFileSync('src/assets/crown.png');
         const emerald = fs.readFileSync('src/assets/emerald.png');
@@ -9866,11 +9866,11 @@ function databaseInserts() {
 
 
 
-                // inserirUsuarios().then(() => {
-                //         console.log("Todos os usuários foram inseridos.");
-                // }).catch((err) => {
-                //         console.error("Erro ao inserir os usuários:", err);
-                // });
+                inserirUsuarios().then(() => {
+                        console.log("Todos os usuários foram inseridos.");
+                }).catch((err) => {
+                        console.error("Erro ao inserir os usuários:", err);
+                });
 
                 // const senha1 = await bcrypt.hash("Ab123!@#", 10);
                 // const senha2 = await bcrypt.hash("123", 10);
